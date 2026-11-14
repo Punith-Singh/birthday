@@ -50,48 +50,39 @@ const dialog=document.getElementById('letterDialog');document.getElementById('op
 const notes=['If today feels heavy, let this be your little reminder: you are loved, exactly as you are.','My favourite thought about the future? Getting to share more of it with you.','You deserve a love that makes you feel safe, seen, and celebrated. I hope I give you that, every day.','I don’t need a special occasion to be grateful for you. But I’ll take every chance to celebrate you.','Whatever this next chapter brings, I’m so happy there’s an us in it.'];let note=0;document.getElementById('nextNote').addEventListener('click',()=>{note=(note+1)%notes.length;document.getElementById('noteText').textContent=notes[note];document.getElementById('noteNumber').textContent=`0${note+1} / 05`;});
 let out=false;const wish=document.getElementById('wishButton');wish.addEventListener('click',()=>{out=!out;document.getElementById('flame').classList.toggle('out',out);wish.innerHTML=out?'One more wish? <span>↺</span>':'Make your birthday wish <span>✧</span>';document.getElementById('wishResult').textContent=out?'Happy birthday, my love. May every beautiful wish find you. ♡':'';if(out&&!reduce)for(let i=0;i<65;i++){const bit=document.createElement('i');bit.className='confetti';bit.style.cssText=`left:${Math.random()*100}vw;background:${['#b46986','#e6b3c2','#d3ae7e'][i%3]};--x:${Math.random()*240-120}px;animation-delay:${Math.random()*.6}s`;document.body.append(bit);setTimeout(()=>bit.remove(),4200);}});
 
-// The 3D scene is progressive enhancement; the CSS cake remains usable if WebGL is unavailable.
+// Self-contained, canvas-rendered cake: no external 3D library required.
 (function(){
-  const stage=document.getElementById('cakeStage'),button=document.getElementById('wishButton'),result=document.getElementById('wishResult'),hint=document.getElementById('cakeHint');
-  const loader=document.createElement('script');loader.src='https://cdn.jsdelivr.net/npm/three@0.160.1/build/three.min.js';
-  loader.onerror=()=>{hint.textContent='Make a wish and blow out your candle';};
-  loader.onload=()=>{try{initCake()}catch(e){console.warn('3D cake unavailable',e);hint.textContent='Make a wish and blow out your candle';}};
-  document.head.append(loader);
-  function initCake(){
-    if(!window.THREE)return;
-    const T=window.THREE,scene=new T.Scene(),camera=new T.PerspectiveCamera(34,1,.1,100);
-    camera.position.set(6,5.4,9);camera.lookAt(0,1.35,0);
-    const renderer=new T.WebGLRenderer({alpha:true,antialias:true});renderer.setPixelRatio(Math.min(devicePixelRatio,2));renderer.outputColorSpace=T.SRGBColorSpace;renderer.setClearColor(0,0);stage.prepend(renderer.domElement);stage.classList.add('is-3d');
-    scene.add(new T.HemisphereLight(0xffe6f6,0x392438,2));const light=new T.DirectionalLight(0xfff0e4,3);light.position.set(-4,8,6);scene.add(light);const rim=new T.DirectionalLight(0xee90d9,2);rim.position.set(5,3,-4);scene.add(rim);
-    const mat=(color,roughness=.65,metalness=0)=>new T.MeshStandardMaterial({color,roughness,metalness});
-    const cream=mat(0xffe4dc),frost=mat(0xe8a5bd),sponge=mat(0xf7cead),jam=mat(0xb5597b),gold=mat(0xd4a975,.3,.7),plate=mat(0xf9e8ef,.25,.12),cherry=mat(0xba4169,.25),silver=mat(0xdedbe4,.2,.75);
-    const group=new T.Group();scene.add(group);
-    function cylinder(radius,height,y,material){const m=new T.Mesh(new T.CylinderGeometry(radius,radius,height,64),material);m.position.y=y;group.add(m);return m}
-    cylinder(2.45,.12,.10,gold);cylinder(2.35,.11,.2,plate);cylinder(1.95,.10,.30,cream);
-    const start=-Math.PI/2-.43,end=-Math.PI/2+.43;
-    function wedge(a,b,r,height,y,material,parent){const shape=new T.Shape();shape.moveTo(0,0);shape.lineTo(Math.cos(a)*r,Math.sin(a)*r);shape.absarc(0,0,r,a,b,false);shape.lineTo(0,0);const geo=new T.ExtrudeGeometry(shape,{depth:height,bevelEnabled:false,curveSegments:50});geo.rotateX(-Math.PI/2);const mesh=new T.Mesh(geo,material);mesh.position.y=y;parent.add(mesh);return mesh}
-    const cake=new T.Group(),slice=new T.Group();group.add(cake,slice);
-    const layers=[[.32,.27,sponge],[.59,.075,jam],[.665,.27,sponge],[.935,.075,jam],[1.01,.25,sponge],[1.26,.14,frost],[1.40,.10,cream]];
-    for(const [y,h,m] of layers){wedge(end,start+Math.PI*2,1.78,h,y,m,cake);wedge(start,end,1.78,h,y,m,slice)}
-    function ball(x,y,z,scale,material,parent=group){let m=new T.Mesh(new T.SphereGeometry(1,16,12),material);m.position.set(x,y,z);m.scale.set(...scale);parent.add(m);return m}
-    for(let i=0;i<36;i++){let a=i*Math.PI*2/36;let x=1.68*Math.cos(a),z=1.68*Math.sin(a);let parent=(a>Math.PI/2-.43&&a<Math.PI/2+.43)?slice:cake;ball(x,1.48,z,[.13,.11,.13],cream,parent)}
-    for(let i=0;i<12;i++){let a=i*Math.PI*2/12;ball(1.78*Math.cos(a),1.10,1.78*Math.sin(a),[.11,.22+(i%3)*.06,.11],frost,group)}
-    for(let i=0;i<6;i++){let a=i*Math.PI*2/6;ball(1.22*Math.cos(a),1.61,1.22*Math.sin(a),[.12,.14,.12],cherry,group)}
-    let candle=new T.Mesh(new T.CylinderGeometry(.07,.07,.68,20),cream);candle.position.set(0,1.84,0);group.add(candle);
-    for(let i=0;i<4;i++){let ring=new T.Mesh(new T.TorusGeometry(.071,.018,8,24),jam);ring.position.set(0,1.6+i*.15,0);ring.rotation.x=Math.PI/2+.22;group.add(ring)}
-    let flame=new T.Group();const flameMat=new T.MeshBasicMaterial({color:0xffc65f});let f=new T.Mesh(new T.SphereGeometry(.12,16,16),flameMat);f.scale.set(.7,1.55,.7);flame.add(f);flame.position.set(0,2.35,0);group.add(flame);let glow=new T.PointLight(0xffb154,3,4);glow.position.copy(flame.position);group.add(glow);
-    const knife=new T.Group();const blade=new T.Mesh(new T.BoxGeometry(1.35,.32,.055),silver);blade.position.x=-.65;knife.add(blade);const handle=new T.Mesh(new T.BoxGeometry(.55,.18,.12),gold);handle.position.x=.28;knife.add(handle);knife.position.set(3.7,3.5,1.5);knife.rotation.z=-.55;knife.visible=false;scene.add(knife);
-    let current=0,phase='ready',started=0,frame=0;const now=()=>performance.now();
-    function resize(){const w=stage.clientWidth,h=stage.clientHeight;if(!w||!h)return;camera.aspect=w/h;camera.position.set(w<450?7.8:6,5.4,w<450?11.7:9);camera.lookAt(0,1.2,0);camera.updateProjectionMatrix();renderer.setSize(w,h,false)}
-    resize();window.addEventListener('resize',resize,{passive:true});
-    const previous=button.cloneNode(true);button.replaceWith(previous);const action=previous;
-    action.textContent='Make a wish & blow out the candle ✧';hint.textContent='A little birthday magic, made just for you';
-    function confetti(){if(reduce)return;for(let i=0;i<65;i++){const bit=document.createElement('i');bit.className='confetti';bit.style.cssText=`left:${Math.random()*100}vw;background:${['#b46986','#e6b3c2','#d3ae7e'][i%3]};--x:${Math.random()*240-120}px;animation-delay:${Math.random()*.6}s`;document.body.append(bit);setTimeout(()=>bit.remove(),4200)}}
-    action.addEventListener('click',()=>{if(phase==='ready'){phase='blown';flame.visible=false;glow.visible=false;action.textContent='Cut the birthday cake ♡';result.textContent='Make a wish, my love. Now let’s celebrate you.';hint.textContent='Your wish is on its way ✨'}else if(phase==='blown'){phase='cutting';started=now();action.disabled=true;knife.visible=true;result.textContent='A little slice of happiness, just for you.';hint.textContent='Making your first slice with love';if(reduce){started-=6000}}else if(phase==='done'){slice.position.set(0,0,0);knife.visible=false;flame.visible=true;glow.visible=true;phase='ready';action.textContent='Make a wish & blow out the candle ✧';result.textContent='';hint.textContent='A little birthday magic, made just for you'}});
-    const smooth=t=>{t=Math.max(0,Math.min(1,t));return t*t*(3-2*t)};
-    function animate(t){frame=requestAnimationFrame(animate);if(!reduce&&flame.visible){flame.scale.setScalar(.9+Math.sin(t*.012)*.08);glow.intensity=2.5+Math.sin(t*.02)*.5}if(phase==='cutting'){let elapsed=t-started;let enter=smooth(elapsed/850),cut=smooth((elapsed-850)/1000),withdraw=smooth((elapsed-1950)/700),slide=smooth((elapsed-2350)/1200);knife.position.set(3.7-2.4*enter+1.3*withdraw,3.5-1.5*enter-.65*cut+1.5*withdraw,1.5);knife.rotation.z=-.55+.4*enter;slice.position.set(.15*slide,.1*slide,1.15*slide);if(elapsed>3700){knife.visible=false;phase='done';action.disabled=false;action.textContent='Celebrate again ↺';result.textContent='Happy birthday, Roseantic. Here’s to every beautiful wish coming true. ♡';hint.textContent='A slice of love, just for you';confetti()}}renderer.render(scene,camera)}
-    requestAnimationFrame(animate);
-  }
+ const stage=document.getElementById('cakeStage'), oldButton=document.getElementById('wishButton'), hint=document.getElementById('cakeHint'), result=document.getElementById('wishResult');
+ const canvas=document.createElement('canvas'),ctx=canvas.getContext('2d');if(!ctx){hint.textContent='Make a wish and blow out your candle';return}
+ stage.prepend(canvas);stage.classList.add('is-3d');
+ const button=oldButton.cloneNode(true);oldButton.replaceWith(button);
+ let state='ready',start=0,w=0,h=0,scale=1,ox=0,oy=0,lastTime=0;
+ const A=Math.PI/2-.48,B=Math.PI/2+.48,TAU=2*Math.PI;
+ function resize(){w=stage.clientWidth;h=stage.clientHeight;let d=Math.min(devicePixelRatio||1,2);canvas.width=Math.round(w*d);canvas.height=Math.round(h*d);canvas.style.width=w+'px';canvas.style.height=h+'px';ctx.setTransform(d,0,0,d,0,0);scale=Math.min(w/5.8,h/4.4);ox=w*.5;oy=h*.69}
+ function project(p){let [x,y,z]=p;return [ox+scale*(.832*x-.555*z),oy-scale*(-.248*x+.893*y-.372*z),.496*x+.45*y+.744*z]}
+ function point(r,a,y,shift){return [r*Math.cos(a)+(.18*shift),y+(.07*shift),r*Math.sin(a)+(.85*shift)]}
+ function colorSide(a,light){let k=(Math.cos(a-.7)+1)/2;return light==='sponge'?`rgb(${Math.round(213+32*k)},${Math.round(155+39*k)},${Math.round(140+38*k)})`:light==='jam'?`rgb(${Math.round(151+36*k)},${Math.round(68+25*k)},${Math.round(98+27*k)})`:`rgb(${Math.round(192+40*k)},${Math.round(119+40*k)},${Math.round(146+37*k)})`}
+ function render(t){lastTime=t;ctx.clearRect(0,0,w,h);const shapes=[];
+  function poly(points,fill,stroke){let p=points.map(project);shapes.push({p,depth:p.reduce((n,v)=>n+v[2],0)/p.length,fill,stroke})}
+  function disc(r,y,color){let pts=[];for(let i=0;i<64;i++)pts.push(point(r,i*TAU/64,y,0));poly(pts,color)}
+  disc(2.24,.04,'#b887a1');disc(2.21,.12,'#f6e8df');disc(1.95,.18,'#ddbbc5');
+  const slide=state==='cutting'?Math.max(0,Math.min(1,(t-start-2100)/1100)):(state==='done'?1:0);let shift=slide*slide*(3-2*slide);
+  const layers=[[.23,.29,'sponge'],[.52,.08,'jam'],[.60,.29,'sponge'],[.89,.08,'jam'],[.97,.28,'sponge'],[1.25,.16,'frost']];
+  for(let i=0;i<64;i++){let a=i*TAU/64,b=(i+1)*TAU/64,mid=(a+b)/2,part=mid>=A&&mid<=B,sh=part?shift:0;for(const [y,ht,type] of layers){poly([point(1.7,a,y,sh),point(1.7,b,y,sh),point(1.7,b,y+ht,sh),point(1.7,a,y+ht,sh)],colorSide(mid,type))}poly([point(0,0,1.41,sh),point(1.7,a,1.41,sh),point(1.7,b,1.41,sh)],part?'#ffe6de':'#fff0e6')}
+  if(shift>.005){for(const ang of [A,B])for(const [y,ht,type] of layers){poly([point(0,ang,y,shift),point(1.7,ang,y,shift),point(1.7,ang,y+ht,shift),point(0,ang,y+ht,shift)],type==='sponge'?'#f5d3b4':type==='jam'?'#b65e7d':'#e9afc2')}}
+  shapes.sort((a,b)=>a.depth-b.depth);for(const s of shapes){ctx.beginPath();s.p.forEach((p,i)=>i?ctx.lineTo(p[0],p[1]):ctx.moveTo(p[0],p[1]));ctx.closePath();ctx.fillStyle=s.fill;ctx.fill();if(s.stroke){ctx.strokeStyle=s.stroke;ctx.stroke()}}
+  // Frosting rosettes and strawberries sit on the upper rim.
+  for(let i=0;i<20;i++){let a=i*TAU/20,sh=(a>=A&&a<=B)?shift:0,p=project(point(1.52,a,1.44,sh));ctx.beginPath();ctx.ellipse(p[0],p[1],scale*.115,scale*.075,0,0,TAU);ctx.fillStyle=i%4?'#fff4e9':'#e7a9bd';ctx.fill();ctx.strokeStyle='#e8bcc5';ctx.lineWidth=1;ctx.stroke()}
+  for(let i=0;i<5;i++){let a=i*TAU/5+.2,p=project(point(1.14,a,1.47,0));ctx.beginPath();ctx.ellipse(p[0],p[1],scale*.105,scale*.12,0,0,TAU);ctx.fillStyle='#b94e72';ctx.fill();ctx.beginPath();ctx.ellipse(p[0]-scale*.025,p[1]-scale*.045,scale*.022,scale*.03,0,0,TAU);ctx.fillStyle='#fff9';ctx.fill()}
+  let base=project([0,1.4,0]),top=project([0,2.05,0]);ctx.lineCap='round';ctx.lineWidth=scale*.12;ctx.strokeStyle='#fff0df';ctx.beginPath();ctx.moveTo(base[0],base[1]);ctx.lineTo(top[0],top[1]);ctx.stroke();ctx.lineWidth=scale*.035;ctx.strokeStyle='#d181a1';for(let i=0;i<4;i++){let f=(i+.3)/4,x=base[0]+(top[0]-base[0])*f,y=base[1]+(top[1]-base[1])*f;ctx.beginPath();ctx.moveTo(x-scale*.06,y+scale*.035);ctx.lineTo(x+scale*.06,y-scale*.035);ctx.stroke()}
+  if(state==='ready'){let flicker=reduce?0:Math.sin(t/180)*scale*.012;let grad=ctx.createRadialGradient(top[0],top[1]-scale*.14,0,top[0],top[1]-scale*.14,scale*.38);grad.addColorStop(0,'#ffca5a99');grad.addColorStop(1,'#ffb35b00');ctx.fillStyle=grad;ctx.fillRect(top[0]-scale*.4,top[1]-scale*.55,scale*.8,scale*.8);ctx.beginPath();ctx.moveTo(top[0],top[1]-scale*.04);ctx.bezierCurveTo(top[0]-scale*.16,top[1]-scale*.16,top[0]+flicker,top[1]-scale*.31,top[0]+scale*.025,top[1]-scale*.34);ctx.bezierCurveTo(top[0]+scale*.17,top[1]-scale*.18,top[0]+scale*.12,top[1]-scale*.07,top[0],top[1]-scale*.04);ctx.fillStyle='#ffd16e';ctx.fill()}
+  if(state==='cutting'){let elapsed=t-start,enter=Math.min(1,elapsed/700),press=Math.min(1,Math.max(0,(elapsed-700)/1000)),exit=Math.min(1,Math.max(0,(elapsed-1900)/700));let p=project([2.7-1.6*enter+1.6*exit,2.8-.9*enter-.55*press+1.2*exit,.9]);ctx.save();ctx.translate(p[0],p[1]);ctx.rotate(-.45+.3*enter);ctx.beginPath();ctx.moveTo(-scale*1.15,-scale*.10);ctx.lineTo(0,-scale*.10);ctx.lineTo(0,scale*.13);ctx.lineTo(-scale*.8,scale*.13);ctx.quadraticCurveTo(-scale*1.15,scale*.12,-scale*1.15,-scale*.10);let steel=ctx.createLinearGradient(0,-scale*.1,0,scale*.13);steel.addColorStop(0,'#fff');steel.addColorStop(1,'#aaa4b4');ctx.fillStyle=steel;ctx.fill();ctx.fillStyle='#ba8290';ctx.fillRect(0,-scale*.065,scale*.5,scale*.13);ctx.restore();if(elapsed>3300){state='done';button.disabled=false;button.textContent='Celebrate again ↺';hint.textContent='A slice of love, just for you';result.textContent='Happy birthday, Roseantic. May every beautiful wish come true. ♡';celebrate()}}
+  requestAnimationFrame(render)
+ }
+ function celebrate(){if(reduce)return;for(let i=0;i<65;i++){let bit=document.createElement('i');bit.className='confetti';bit.style.cssText=`left:${Math.random()*100}vw;background:${['#b46986','#e6b3c2','#d3ae7e'][i%3]};--x:${Math.random()*240-120}px;animation-delay:${Math.random()*.6}s`;document.body.append(bit);setTimeout(()=>bit.remove(),4200)}}
+ button.textContent='Make a wish & blow out the candle ✧';hint.textContent='A little birthday magic, made just for you';
+ button.addEventListener('click',()=>{if(state==='ready'){state='blown';button.textContent='Cut the birthday cake ♡';result.textContent='Make a wish, my love. Now let’s celebrate you.';hint.textContent='Your wish is on its way ✨'}else if(state==='blown'){state='cutting';start=performance.now()-(reduce?3400:0);button.disabled=true;hint.textContent='Making your first slice with love';result.textContent='A little slice of happiness, just for you.'}else if(state==='done'){state='ready';button.textContent='Make a wish & blow out the candle ✧';result.textContent='';hint.textContent='A little birthday magic, made just for you'}});
+ window.addEventListener('resize',resize,{passive:true});resize();requestAnimationFrame(render);
 })();
 
 </script>
