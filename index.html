@@ -2402,7 +2402,17 @@ dialog[open] {
   }
 }
 
-    </style>
+    
+/* A little applause when the birthday wish is made. */
+.cake-stage .applause{position:absolute;inset:0;z-index:4;pointer-events:none;overflow:visible;visibility:hidden}
+.cake-stage.is-clapping .applause{visibility:visible}
+.applause span{position:absolute;font-size:clamp(26px,5vw,48px);opacity:0;filter:drop-shadow(0 5px 9px #20061b55)}
+.applause span:nth-child(1){left:5%;top:35%}.applause span:nth-child(2){right:5%;top:35%}.applause span:nth-child(3){left:17%;top:10%}.applause span:nth-child(4){right:17%;top:10%}
+.is-clapping .applause span{animation:applausePop 3.8s ease-in-out forwards}.is-clapping .applause span:nth-child(2){animation-delay:.12s}.is-clapping .applause span:nth-child(3){animation-delay:.24s}.is-clapping .applause span:nth-child(4){animation-delay:.36s}
+@keyframes applausePop{0%{opacity:0;transform:translateY(18px) scale(.55) rotate(-15deg)}12%,72%{opacity:1}20%,40%,60%{transform:translateY(-4px) scale(1.12) rotate(12deg)}30%,50%,70%{transform:translateY(0) scale(1) rotate(-12deg)}100%{opacity:0;transform:translateY(-25px) scale(.8)}}
+@media(prefers-reduced-motion:reduce){.is-clapping .applause span{animation:none;opacity:1}}
+
+</style>
   </head>
 
   <body>
@@ -2520,7 +2530,7 @@ dialog[open] {
         <p>Whatever you wish for, I hope this year brings you closer to it.<br>And I hope I get to be right
           there, celebrating with you.</p>
         <div class="cake-stage" id="cakeStage" role="img"
-          aria-label="A birthday cake with a candle. Use the button below to make a wish and cut the cake.">
+          aria-label="A birthday cake with three candles. Use the button below to make a wish and cut the cake.">
           <div class="cake" aria-hidden="true">
             <div class="candle">
               <div id="flame" class="flame"></div>
@@ -2735,6 +2745,7 @@ wish.addEventListener('click', () => {
     return
   }
   stage.prepend(canvas);
+  const applause=document.createElement('div');applause.className='applause';applause.setAttribute('aria-hidden','true');applause.innerHTML='<span>👏</span><span>👏</span><span>👏</span><span>👏</span>';stage.append(applause);
   stage.classList.add('is-3d');
   const handImage = new Image();
   let handArt = null;
@@ -2767,8 +2778,8 @@ wish.addEventListener('click', () => {
     oy = 0,
     lastTime = 0;
   const TAU = 2 * Math.PI,
-    A = 11 * TAU / 64,
-    B = 21 * TAU / 64;
+    A = 0 * TAU / 64,
+    B = 5 * TAU / 64;
   const ease = t => {
     t = Math.max(0, Math.min(1, t));
     return t * t * (3 - 2 * t)
@@ -2794,7 +2805,7 @@ wish.addEventListener('click', () => {
   }
 
   function point(r, a, y, shift) {
-    return [r * Math.cos(a) + (.18 * shift), y + (.07 * shift), r * Math.sin(a) + (.85 * shift)]
+    return [r * Math.cos(a) + (.82 * shift), y + (.07 * shift), r * Math.sin(a) + (.20 * shift)]
   }
 
   function colorSide(a, light) {
@@ -2817,7 +2828,9 @@ wish.addEventListener('click', () => {
         button.disabled = false;
         button.textContent = 'Cut the birthday cake ♡';
         result.textContent = 'Make a wish, my love. Now let’s celebrate you.';
-        hint.textContent = 'Your wish is on its way ✨'
+        hint.textContent = 'Your wish is on its way ✨';
+        stage.classList.remove('is-clapping');void stage.offsetWidth;stage.classList.add('is-clapping');
+        window.setTimeout(() => stage.classList.remove('is-clapping'), 4200)
       }
     }
     ctx.clearRect(0, 0, w, h);
@@ -2906,53 +2919,33 @@ wish.addEventListener('click', () => {
       ctx.fillStyle = '#fff9';
       ctx.fill()
     }
-    let base = project([0, 1.4, 0]),
-      top = project([0, 2.05, 0]);
-    ctx.lineCap = 'round';
-    ctx.lineWidth = scale * .12;
-    ctx.strokeStyle = '#fff0df';
-    ctx.beginPath();
-    ctx.moveTo(base[0], base[1]);
-    ctx.lineTo(top[0], top[1]);
-    ctx.stroke();
-    ctx.lineWidth = scale * .035;
-    ctx.strokeStyle = '#d181a1';
-    for (let i = 0; i < 4; i++) {
-      let f = (i + .3) / 4,
-        x = base[0] + (top[0] - base[0]) * f,
-        y = base[1] + (top[1] - base[1]) * f;
-      ctx.beginPath();
-      ctx.moveTo(x - scale * .06, y + scale * .035);
-      ctx.lineTo(x + scale * .06, y - scale * .035);
-      ctx.stroke()
-    }
-    if (state === 'ready' || state === 'counting') {
-      // The flame leans away and shrinks as the wish reaches zero.
-      const last = state === 'counting' ? Math.max(0, Math.min(1, (t - countStart - 2100) / 900)) : 0;
-      const flicker = reduce ? 0 : Math.sin(t / 145) * .04;
-      const lean = reduce ? 0 : last * .55;
-      ctx.save();
-      ctx.translate(top[0], top[1] - scale * .03);
-      ctx.rotate(lean + flicker);
-      ctx.scale(1 - .55 * last, 1 - .72 * last);
-      let grad = ctx.createRadialGradient(0, -scale * .14, 0, 0, -scale * .14, scale * .45);
-      grad.addColorStop(0, '#ffe2a5cc');
-      grad.addColorStop(.42, '#ffb45c66');
-      grad.addColorStop(1, '#ffb35b00');
-      ctx.fillStyle = grad;
-      ctx.fillRect(-scale * .5, -scale * .65, scale, scale);
-      ctx.beginPath();
-      ctx.moveTo(0, 0);
-      ctx.bezierCurveTo(-scale * .15, -scale * .12, -scale * .08, -scale * .26, scale * .025, -scale * .36);
-      ctx.bezierCurveTo(scale * .17, -scale * .18, scale * .12, -scale * .05, 0, 0);
-      ctx.fillStyle = '#ffb95e';
-      ctx.fill();
-      ctx.beginPath();
-      ctx.ellipse(0, -scale * .085, scale * .043, scale * .082, 0, 0, Math.PI * 2);
-      ctx.fillStyle = '#fff4ce';
-      ctx.fill();
-      ctx.restore()
-    }
+    // Three tall birthday candles, with individual flames and drifting smoke.
+    const candlePositions = [[-.62, 1.41, -.46], [0, 1.41, -.46], [.62, 1.41, -.46]];
+    candlePositions.forEach(([x, y, z], index) => {
+      const base = project([x, y, z]), top = project([x, y + .92, z]);
+      ctx.lineCap = 'round';
+      ctx.lineWidth = scale * .15;
+      ctx.strokeStyle = '#fff0df';
+      ctx.beginPath();ctx.moveTo(base[0], base[1]);ctx.lineTo(top[0], top[1]);ctx.stroke();
+      ctx.lineWidth = scale * .04;ctx.strokeStyle = index === 1 ? '#d07099' : '#df93b3';
+      for (let i = 0; i < 5; i++) {
+        const f = (i + .35) / 5, px = base[0] + (top[0] - base[0]) * f, py = base[1] + (top[1] - base[1]) * f;
+        ctx.beginPath();ctx.moveTo(px - scale * .07, py + scale * .035);ctx.lineTo(px + scale * .07, py - scale * .035);ctx.stroke();
+      }
+      if (state === 'ready' || state === 'counting') {
+        const last = state === 'counting' ? Math.max(0, Math.min(1, (t - countStart - 2100) / 900)) : 0;
+        const flicker = reduce ? 0 : Math.sin(t / 145 + index) * .04;
+        ctx.save();ctx.translate(top[0], top[1] - scale * .03);ctx.rotate((reduce ? 0 : last * .55) + flicker);ctx.scale(1 - .55 * last, 1 - .72 * last);
+        const glow = ctx.createRadialGradient(0, -scale * .14, 0, 0, -scale * .14, scale * .45);
+        glow.addColorStop(0, '#ffe2a5cc');glow.addColorStop(.42, '#ffb45c66');glow.addColorStop(1, '#ffb35b00');ctx.fillStyle = glow;ctx.fillRect(-scale * .5, -scale * .65, scale, scale);
+        ctx.beginPath();ctx.moveTo(0, 0);ctx.bezierCurveTo(-scale * .15, -scale * .12, -scale * .08, -scale * .26, scale * .025, -scale * .36);ctx.bezierCurveTo(scale * .17, -scale * .18, scale * .12, -scale * .05, 0, 0);ctx.fillStyle = '#ffb95e';ctx.fill();
+        ctx.beginPath();ctx.ellipse(0, -scale * .085, scale * .043, scale * .082, 0, 0, Math.PI * 2);ctx.fillStyle = '#fff4ce';ctx.fill();ctx.restore();
+      }
+      if (blownAt && t - blownAt < 2600 && state !== 'ready' && !reduce) {
+        const age = (t - blownAt) / 2600;ctx.save();ctx.globalAlpha = (1 - age) * .48;ctx.strokeStyle = '#fbe6ed';ctx.lineWidth = Math.max(1, scale * .018);ctx.beginPath();ctx.moveTo(top[0], top[1] - scale * .06);
+        ctx.bezierCurveTo(top[0] + scale * .13, top[1] - scale * (.22 + age * .14), top[0] - scale * .1, top[1] - scale * (.3 + age * .2), top[0] + scale * .06, top[1] - scale * (.5 + age * .22));ctx.stroke();ctx.restore();
+      }
+    });
     // Draw two fine cuts on the frosting, timed with the knife.
     if (elapsed > 1200) {
       for (let j = 0; j < 2; j++) {
@@ -2972,19 +2965,6 @@ wish.addEventListener('click', () => {
         ctx.restore()
       }
     }
-    // A little wisp follows the candle after the wish.
-    if (blownAt && t - blownAt < 2600 && state !== 'ready' && !reduce) {
-      let age = (t - blownAt) / 2600;
-      ctx.save();
-      ctx.globalAlpha = (1 - age) * .48;
-      ctx.strokeStyle = '#fbe6ed';
-      ctx.lineWidth = Math.max(1, scale * .018);
-      ctx.beginPath();
-      ctx.moveTo(top[0], top[1] - scale * .06);
-      ctx.bezierCurveTo(top[0] + scale * .13, top[1] - scale * (.22 + age * .14), top[0] - scale * .1, top[1] - scale * (.3 + age * .2), top[0] + scale * .06, top[1] - scale * (.5 + age * .22));
-      ctx.stroke();
-      ctx.restore()
-    }
     if (state === 'cutting') {
       // The knife approaches, presses along one edge, lifts, then repeats on the other edge.
       let phase = elapsed < 2500 ? elapsed : elapsed - 2500,
@@ -2995,7 +2975,7 @@ wish.addEventListener('click', () => {
           lift = ease((phase - 1550) / 600),
           depth = .85 * approach + .42 * press - 1.25 * lift;
         let tip = project(point(.18, angle, 2.65 - depth, 0));
-        let outer = [ox + scale * (1.56 + .40 * (1 - approach) + .40 * lift), tip[1] + scale * .10];
+        let outer = project(point(1.75 + .30 * (1 - approach) + .30 * lift, angle, 2.65 - depth, 0));
         let dx = outer[0] - tip[0],
           dy = outer[1] - tip[1],
           length = Math.hypot(dx, dy) || 1,
@@ -3122,7 +3102,7 @@ wish.addEventListener('click', () => {
       setTimeout(() => bit.remove(), 4200)
     }
   }
-  button.textContent = 'Make a wish & blow out the candle ✧';
+  button.textContent = 'Make a wish & blow out the candles ✧';
   hint.textContent = 'A little birthday magic, made just for you';
   button.addEventListener('click', () => {
     if (state === 'ready') {
@@ -3133,7 +3113,7 @@ wish.addEventListener('click', () => {
       counter.hidden = false;
       button.disabled = true;
       hint.textContent = 'Close your eyes and make a wish';
-      result.textContent = 'Blowing out the candle in…'
+      result.textContent = 'Blowing out the candles in…'
     } else if (state === 'blown') {
       state = 'cutting';
       start = performance.now() - (reduce ? 6300 : 0);
@@ -3142,9 +3122,10 @@ wish.addEventListener('click', () => {
       result.textContent = 'A little slice of happiness, just for you.'
     } else if (state === 'done') {
       state = 'ready';
+      stage.classList.remove('is-clapping');
       blownAt = 0;
       counter.hidden = true;
-      button.textContent = 'Make a wish & blow out the candle ✧';
+      button.textContent = 'Make a wish & blow out the candles ✧';
       result.textContent = '';
       hint.textContent = 'A little birthday magic, made just for you'
     }
