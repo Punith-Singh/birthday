@@ -36,6 +36,16 @@ header{border-color:#f6bed82e}.wordmark span,.small-heart,.note-star{color:#ffb6
 
 .candle-count{display:inline-flex;align-items:center;justify-content:center;min-width:4.2rem;min-height:4.2rem;margin:0 auto 12px;border-radius:50%;border:1px solid #ffd5e8;background:radial-gradient(circle at 35% 30%,#ffedf5,#ed92be);box-shadow:0 0 32px #f79bca80,0 8px 25px #19061666;color:#702c53;font:800 32px/1 var(--font)}.candle-count[hidden]{display:none}
 .cake-stage{width:min(100%,820px)}
+
+/* Gentle 3D motion for the birthday cards */
+.love-grid article{--tilt-x:0deg;--tilt-y:0deg;transform:perspective(1000px) rotateX(var(--tilt-x)) rotateY(var(--tilt-y));transform-style:preserve-3d;will-change:transform;transition:transform .28s ease,box-shadow .28s ease}
+.love-grid article:hover{transform:perspective(1000px) translateY(-8px) rotateX(var(--tilt-x)) rotateY(var(--tilt-y))}
+.love-grid article:before{content:'';position:absolute;inset:0;border-radius:inherit;pointer-events:none;background:radial-gradient(circle at var(--glow-x,50%) var(--glow-y,50%),#ffd9eb2c,transparent 50%);opacity:0;transition:opacity .25s}
+.love-grid article:hover:before{opacity:1}.love-grid article>*{position:relative;transform:translateZ(22px)}.love-grid .card-number{position:absolute}
+.date-card{transition:transform .35s ease,box-shadow .35s ease;transform:perspective(700px) rotate(-6deg) rotateY(-8deg)}.date-card:hover{transform:perspective(700px) rotate(-3deg) rotateY(3deg) translateY(-5px);box-shadow:0 22px 40px #09031388}
+.note-display{transition:transform .35s ease}.note-display:hover{transform:perspective(900px) rotateX(0deg) translateY(-4px)}
+@media(prefers-reduced-motion:reduce){.love-grid article,.love-grid article:hover,.date-card,.date-card:hover,.note-display,.note-display:hover{transform:none!important;will-change:auto}}
+
 </style></head><body>
 <div class="cosmos" aria-hidden="true"><span class="shooting"></span><span class="shooting"></span></div>
 <div class="intro" id="intro" hidden><div class="intro-sky" aria-hidden="true"><span class="shooting"></span><span class="shooting"></span></div><p class="intro-kicker">✦ &nbsp; A LITTLE UNIVERSE, MADE FOR YOU &nbsp; ✦</p><div class="intro-heart">♡</div><p>FROM MY HEART TO YOURS</p><h2>For you, Roseantic.</h2><p class="intro-sub">A little piece of my heart, wrapped in stardust and made just for you.</p><button id="enter" class="btn">Open with love ↗</button></div>
@@ -185,5 +195,14 @@ let out=false;const wish=document.getElementById('wishButton');wish.addEventList
  let last=0;function tick(time){requestAnimationFrame(tick);if(document.hidden)return;if(time-last<30)return;last=time;let t=time*.001;pointer.x+=(target.x-pointer.x)*.035;pointer.y+=(target.y-pointer.y)*.035;points.rotation.y=reduce?0:t*.012+scroll*.00004;points.rotation.x=reduce?0:Math.sin(t*.15)*.02;bc.position.x=pointer.x*.4;bc.position.y=-pointer.y*.4;bc.lookAt(0,0,0);bgRenderer.render(bg,bc);orbit.rotation.y=reduce?-.18:Math.sin(t*.22)*.12+pointer.x*.22;orbit.rotation.x=reduce?0:Math.sin(t*.3)*.04-pointer.y*.12;orbit.position.y=reduce?0:Math.sin(t*.9)*.12;heart.rotation.y=reduce?0:Math.sin(t*.6)*.16;moons.forEach((m,i)=>{let a=t*(.22+i*.015)+i*Math.PI*2/7;m.position.set(Math.cos(a)*2.65,Math.sin(a)*.7,Math.sin(a)*1.4)});heroRenderer.render(hero,hc)}requestAnimationFrame(tick);
 })();
 
+
+// Pointer-aware depth on the keepsake cards; touch and reduced-motion visitors retain the static design.
+(function(){
+ if(reduce||!matchMedia('(hover: hover) and (pointer: fine)').matches)return;
+ document.querySelectorAll('.love-grid article').forEach(card=>{
+  card.addEventListener('pointermove',e=>{const r=card.getBoundingClientRect(),x=(e.clientX-r.left)/r.width,y=(e.clientY-r.top)/r.height;card.style.setProperty('--tilt-x',((.5-y)*8).toFixed(2)+'deg');card.style.setProperty('--tilt-y',((x-.5)*8).toFixed(2)+'deg');card.style.setProperty('--glow-x',(x*100).toFixed(1)+'%');card.style.setProperty('--glow-y',(y*100).toFixed(1)+'%')});
+  card.addEventListener('pointerleave',()=>{card.style.setProperty('--tilt-x','0deg');card.style.setProperty('--tilt-y','0deg')});
+ });
+})();
 </script>
 </body></html>
