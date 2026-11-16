@@ -46,6 +46,14 @@ header{border-color:#f6bed82e}.wordmark span,.small-heart,.note-star{color:#ffb6
 .note-display{transition:transform .35s ease}.note-display:hover{transform:perspective(900px) rotateX(0deg) translateY(-4px)}
 @media(prefers-reduced-motion:reduce){.love-grid article,.love-grid article:hover,.date-card,.date-card:hover,.note-display,.note-display:hover{transform:none!important;will-change:auto}}
 
+
+/* Keep the wish countdown in view, even after a mobile tap scrolls the button. */
+.candle-count{position:fixed;top:28%;left:50%;z-index:110;transform:translate(-50%,-50%);width:clamp(76px,18vw,108px);height:clamp(76px,18vw,108px);margin:0;border:2px solid #fff4fa;background:radial-gradient(circle at 30% 25%,#fff8fc,#ffb5d3 67%,#d675a6);box-shadow:0 0 0 10px #ffc9e331,0 0 65px #ffa8dccc,0 12px 30px #2c0a2544;color:#71254b;font-size:clamp(36px,9vw,52px);pointer-events:none;animation:countPulse .7s ease-in-out infinite alternate}
+.candle-count[hidden]{display:none}@keyframes countPulse{from{transform:translate(-50%,-50%) scale(.94)}to{transform:translate(-50%,-50%) scale(1.06)}}
+@media(max-width:700px){.hero{padding-inline:6%;gap:45px}.hero h1{font-size:clamp(42px,11vw,58px);overflow-wrap:anywhere}.hero-scene{width:88%;max-width:390px}.section{padding-inline:6%}.wish{padding-inline:6%}.cake-stage{height:clamp(245px,80vw,330px);width:100%;margin-inline:auto}.wish .btn{min-height:52px;max-width:100%;text-align:center;justify-content:center}.wish-result{padding-inline:8px}.countdown{margin-inline:6%;gap:10px}.count-units{gap:clamp(8px,4vw,22px)}.count-units div{min-width:40px}.intro .intro-sub{max-width:85vw}dialog{max-width:calc(100vw - 32px)} }
+@media(max-width:360px){.header-date i{margin-left:5px}.hero h1{font-size:43px}.date-card{left:-10px}.love-tag{right:-10px}}
+@media(prefers-reduced-motion:reduce){.candle-count{animation:none}}
+
 </style></head><body>
 <div class="cosmos" aria-hidden="true"><span class="shooting"></span><span class="shooting"></span></div>
 <div class="intro" id="intro" hidden><div class="intro-sky" aria-hidden="true"><span class="shooting"></span><span class="shooting"></span></div><p class="intro-kicker">✦ &nbsp; A LITTLE UNIVERSE, MADE FOR YOU &nbsp; ✦</p><div class="intro-heart">♡</div><p>FROM MY HEART TO YOURS</p><h2>For you, Roseantic.</h2><p class="intro-sub">A little piece of my heart, wrapped in stardust and made just for you.</p><button id="enter" class="btn">Open with love ↗</button></div>
@@ -133,11 +141,18 @@ let out=false;const wish=document.getElementById('wishButton');wish.addEventList
   for(let i=0;i<20;i++){let a=i*TAU/20,sh=(a>=A&&a<=B)?shift:0,p=project(point(1.52,a,1.44,sh));ctx.beginPath();ctx.ellipse(p[0],p[1],scale*.115,scale*.075,0,0,TAU);ctx.fillStyle=i%4?'#fff4e9':'#e7a9bd';ctx.fill();ctx.strokeStyle='#e8bcc5';ctx.lineWidth=1;ctx.stroke()}
   for(let i=0;i<5;i++){let a=i*TAU/5+.2,sh=(a>=A&&a<=B)?shift:0,p=project(point(1.14,a,1.47,sh));ctx.beginPath();ctx.ellipse(p[0],p[1],scale*.105,scale*.12,0,0,TAU);ctx.fillStyle='#b94e72';ctx.fill();ctx.beginPath();ctx.ellipse(p[0]-scale*.025,p[1]-scale*.045,scale*.022,scale*.03,0,0,TAU);ctx.fillStyle='#fff9';ctx.fill()}
   let base=project([0,1.4,0]),top=project([0,2.05,0]);ctx.lineCap='round';ctx.lineWidth=scale*.12;ctx.strokeStyle='#fff0df';ctx.beginPath();ctx.moveTo(base[0],base[1]);ctx.lineTo(top[0],top[1]);ctx.stroke();ctx.lineWidth=scale*.035;ctx.strokeStyle='#d181a1';for(let i=0;i<4;i++){let f=(i+.3)/4,x=base[0]+(top[0]-base[0])*f,y=base[1]+(top[1]-base[1])*f;ctx.beginPath();ctx.moveTo(x-scale*.06,y+scale*.035);ctx.lineTo(x+scale*.06,y-scale*.035);ctx.stroke()}
-  if(state==='ready'||state==='counting'){let flicker=reduce?0:Math.sin(t/180)*scale*.012;let grad=ctx.createRadialGradient(top[0],top[1]-scale*.14,0,top[0],top[1]-scale*.14,scale*.38);grad.addColorStop(0,'#ffca5a99');grad.addColorStop(1,'#ffb35b00');ctx.fillStyle=grad;ctx.fillRect(top[0]-scale*.4,top[1]-scale*.55,scale*.8,scale*.8);ctx.beginPath();ctx.moveTo(top[0],top[1]-scale*.04);ctx.bezierCurveTo(top[0]-scale*.16,top[1]-scale*.16,top[0]+flicker,top[1]-scale*.31,top[0]+scale*.025,top[1]-scale*.34);ctx.bezierCurveTo(top[0]+scale*.17,top[1]-scale*.18,top[0]+scale*.12,top[1]-scale*.07,top[0],top[1]-scale*.04);ctx.fillStyle='#ffd16e';ctx.fill()}
+  if(state==='ready'||state==='counting'){
+   // The flame leans away and shrinks as the wish reaches zero.
+   const last=state==='counting'?Math.max(0,Math.min(1,(t-countStart-2100)/900)):0;
+   const flicker=reduce?0:Math.sin(t/145)*.04;const lean=reduce?0:last*.55;
+   ctx.save();ctx.translate(top[0],top[1]-scale*.03);ctx.rotate(lean+flicker);ctx.scale(1-.55*last,1-.72*last);
+   let grad=ctx.createRadialGradient(0,-scale*.14,0,0,-scale*.14,scale*.45);grad.addColorStop(0,'#ffe2a5cc');grad.addColorStop(.42,'#ffb45c66');grad.addColorStop(1,'#ffb35b00');ctx.fillStyle=grad;ctx.fillRect(-scale*.5,-scale*.65,scale,scale);
+   ctx.beginPath();ctx.moveTo(0,0);ctx.bezierCurveTo(-scale*.15,-scale*.12,-scale*.08,-scale*.26,scale*.025,-scale*.36);ctx.bezierCurveTo(scale*.17,-scale*.18,scale*.12,-scale*.05,0,0);ctx.fillStyle='#ffb95e';ctx.fill();ctx.beginPath();ctx.ellipse(0,-scale*.085,scale*.043,scale*.082,0,0,Math.PI*2);ctx.fillStyle='#fff4ce';ctx.fill();ctx.restore()
+  }
   // Draw two fine cuts on the frosting, timed with the knife.
   if(elapsed>1200){for(let j=0;j<2;j++){let phase=elapsed-(j===0?1200:3100),progress=ease(phase/700);if(progress<=0)continue;let a=j===0?A:B,p0=project(point(.16,a,1.415,0)),p1=project(point(.16+1.54*progress,a,1.415,0));ctx.save();ctx.strokeStyle='#9d62776d';ctx.lineWidth=Math.max(1,scale*.018);ctx.beginPath();ctx.moveTo(p0[0],p0[1]);ctx.lineTo(p1[0],p1[1]);ctx.stroke();ctx.restore()}}
   // A little wisp follows the candle after the wish.
-  if(blownAt&&t-blownAt<1800&&state!=='ready'&&!reduce){let age=(t-blownAt)/1800;ctx.save();ctx.globalAlpha=(1-age)*.48;ctx.strokeStyle='#fbe6ed';ctx.lineWidth=Math.max(1,scale*.018);ctx.beginPath();ctx.moveTo(top[0],top[1]-scale*.06);ctx.bezierCurveTo(top[0]+scale*.13,top[1]-scale*(.22+age*.14),top[0]-scale*.1,top[1]-scale*(.3+age*.2),top[0]+scale*.06,top[1]-scale*(.5+age*.22));ctx.stroke();ctx.restore()}
+  if(blownAt&&t-blownAt<2600&&state!=='ready'&&!reduce){let age=(t-blownAt)/2600;ctx.save();ctx.globalAlpha=(1-age)*.48;ctx.strokeStyle='#fbe6ed';ctx.lineWidth=Math.max(1,scale*.018);ctx.beginPath();ctx.moveTo(top[0],top[1]-scale*.06);ctx.bezierCurveTo(top[0]+scale*.13,top[1]-scale*(.22+age*.14),top[0]-scale*.1,top[1]-scale*(.3+age*.2),top[0]+scale*.06,top[1]-scale*(.5+age*.22));ctx.stroke();ctx.restore()}
   if(state==='cutting'){
    // The knife approaches, presses along one edge, lifts, then repeats on the other edge.
    let phase=elapsed<2500?elapsed:elapsed-2500,angle=elapsed<2500?A:B;
