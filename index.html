@@ -2460,6 +2460,9 @@ dialog[open] {
 /* A real paper note travels from the jar to the message. */
 .jar-lid{transform-origin:90% 85%}
 .jar-flying-note{position:absolute;z-index:12;display:grid;place-items:center;pointer-events:none;border:1px solid #fff4f8;border-radius:5px;background:linear-gradient(145deg,#fff7f5,#efb3d1);color:#b25380;font:800 20px sans-serif;box-shadow:0 6px 14px #260b2370,0 0 22px #ffd3eb66;will-change:transform,opacity}
+.jar-nav{justify-content:flex-end}
+.jar-nav button{width:auto;height:auto;min-height:46px;padding:12px 22px;border-radius:999px;background:linear-gradient(135deg,#ffe4f0,#f4afcd);border:1px solid #ffebf4;color:#71334f;font:800 12px var(--font);box-shadow:0 8px 22px #db70a038;display:inline-flex;align-items:center;gap:13px}
+.jar-nav button span{font-size:18px;line-height:1}.jar-nav button:hover{background:linear-gradient(135deg,#fff0f7,#ffc6de)}.jar-nav button:focus-visible{outline:3px solid #fff0f7;outline-offset:4px}
 /* The message is written on the paper that opens after the flight. */
 .jar-letter{position:relative;overflow:hidden;isolation:isolate;padding:25px 28px 22px;border:1px solid #fff3ec;border-radius:6px 18px 8px 16px;background:linear-gradient(135deg,#fff9f2 0%,#ffedf1 60%,#f8d7e3 100%);box-shadow:0 18px 35px #16051977,inset 0 1px #fff;transform-origin:center;backface-visibility:hidden}
 .jar-letter:before{content:'';position:absolute;inset:8px;border:1px solid #cf9aae69;border-radius:3px 13px 5px 11px;pointer-events:none}
@@ -2587,7 +2590,7 @@ dialog[open] {
           </div>
           <div class="jar-story"><div class="jar-story-top"><span>FROM MY HEART TO YOURS</span><span>✦</span></div>
             <div id="notePrompt" class="jar-prompt"><span class="jar-quote" aria-hidden="true">“</span><h3>Some things are<br><em>better said often.</em></h3><p>I’ve tucked five little notes in here, just for you.</p><button class="jar-pick" id="pickNote" type="button">Pick a little note <span>↗</span></button></div>
-            <div id="noteReveal" class="jar-reveal" hidden><div class="jar-letter" id="jarLetter"><span class="jar-letter-fold" aria-hidden="true"></span><div class="jar-letter-content"><span class="jar-note-label">A LITTLE REMINDER FOR YOU</span><p id="noteText" aria-live="polite"></p><div class="jar-signature">Always yours, <strong>Punith ♡</strong></div></div></div><div class="jar-nav"><span id="noteNumber">01 / 05</span><div><button type="button" id="prevNote" aria-label="Read the previous love note">←</button><button type="button" id="nextNote" aria-label="Read the next love note">→</button></div></div></div>
+            <div id="noteReveal" class="jar-reveal" hidden><div class="jar-letter" id="jarLetter"><span class="jar-letter-fold" aria-hidden="true"></span><div class="jar-letter-content"><span class="jar-note-label">A LITTLE REMINDER FOR YOU</span><p id="noteText" aria-live="polite"></p><div class="jar-signature">Always yours, <strong>Punith ♡</strong></div></div></div><div class="jar-nav"><button type="button" id="nextNote">Next note <span aria-hidden="true">♡</span></button></div></div>
           </div>
         </div>
       </section>
@@ -2794,7 +2797,6 @@ function prepareNote(index) {
   document.getElementById('notePrompt').hidden = true;
   noteReveal.hidden = false;
   noteText.textContent = notes[note];
-  document.getElementById('noteNumber').textContent = `0${note + 1} / 05`;
   jar.setAttribute('aria-label', 'Draw another love note from the jar');
 }
 
@@ -2873,7 +2875,6 @@ async function showNote(index) {
 jar.addEventListener('click', () => showNote(note + 1));
 document.getElementById('pickNote').addEventListener('click', () => showNote(0));
 document.getElementById('nextNote').addEventListener('click', () => showNote(note + 1));
-document.getElementById('prevNote').addEventListener('click', () => showNote(note - 1));
 let out = false;
 const wish = document.getElementById('wishButton');
 wish.addEventListener('click', () => {
