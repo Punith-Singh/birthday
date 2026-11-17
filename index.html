@@ -2431,6 +2431,15 @@ dialog[open] {
 @media(max-width:700px){.little .section-top{margin-bottom:28px}.little .section-top>p{margin-top:20px;padding-left:16px}.love-grid{gap:15px}.love-grid .love-card{min-height:0;padding:21px 22px 19px}.love-grid .card-art{height:150px;flex-basis:150px}.sun-sphere{width:70px;height:70px}.glass-heart{width:88px}.dream-star{font-size:82px}.love-grid .card-copy h3{font-size:27px}.card-footer{margin-top:22px}}
 @media(prefers-reduced-motion:reduce){.card-art *{animation:none!important}}
 
+
+/* A little stack of letters to keep. */
+.notes-layout{display:grid;grid-template-columns:.9fr 1.1fr;align-items:center;gap:clamp(45px,8vw,110px)}
+.notes-intro>p:not(.eyebrow):not(.notes-footnote){max-width:350px;font-size:15px;line-height:1.9;color:#eed5e0}.notes-index-label{margin-top:38px;color:#f5bad4;font-size:9px;font-weight:800;letter-spacing:.2em}.notes-index-label span{margin-left:8px}.notes-index{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}.notes-index button,.paper-nav button{display:grid;place-items:center;width:46px;height:46px;border-radius:50%;border:1px solid #f6c4da70;background:#ffffff0d;color:#ffe8f1;font:800 11px var(--font);transition:transform .2s,background .2s,color .2s}.notes-index button:hover,.paper-nav button:hover{transform:translateY(-3px);background:#ffffff25}.notes-index button[aria-pressed="true"]{background:#f6bfd5;color:#63253f;border-color:#ffeaf2;box-shadow:0 7px 20px #e58bb038}.notes-footnote{margin-top:30px;color:#dcb6c9;font-size:12px}
+.notes-stage{position:relative;padding:30px 24px 35px;perspective:1200px}.notes-stage:before{content:'';position:absolute;inset:10% -5%;border-radius:50%;background:radial-gradient(ellipse,#f69bc44d,transparent 68%);filter:blur(18px);pointer-events:none}.notes-paper-back,.notes-paper-mid{position:absolute;inset:30px 24px 35px;border-radius:14px;background:#c78ba9;border:1px solid #ffe2ec70;box-shadow:0 24px 50px #12071944}.notes-paper-back{transform:rotate(6deg) translate(8px,5px)}.notes-paper-mid{background:#e7b5ca;transform:rotate(-4deg) translate(-4px,2px)}
+.note-paper{position:relative;min-height:390px;display:flex;flex-direction:column;padding:32px 36px 25px;border-radius:13px;background:linear-gradient(145deg,#fffaf5,#ffeaf0);border:1px solid #fff;box-shadow:0 28px 65px #18071680,inset 0 1px #fff;color:#582d43;overflow:hidden}.note-paper:before{content:'♡';position:absolute;right:20px;top:65px;color:#c37a9d16;font-size:165px;line-height:1;pointer-events:none}.paper-top,.paper-bottom{display:flex;justify-content:space-between;align-items:center;font-size:9px;letter-spacing:.16em;font-weight:800;color:#ad748e}.paper-top span:last-child{color:#d78eae;font-size:21px}.paper-salutation{margin-top:40px;color:#ad6d8a;font-size:13px;font-weight:800}.note-paper #noteText{position:relative;flex:1;margin:14px 0 20px;min-height:0;color:#64344d;font:800 clamp(21px,2.3vw,29px)/1.43 var(--font);letter-spacing:-.035em}.paper-sign{font-size:12px;color:#b17c95}.paper-sign strong{display:block;color:#8b4b6a;font-size:18px;margin-top:3px}.paper-bottom{border-top:1px solid #d8b4c1;margin-top:24px;padding-top:16px}.paper-nav{display:flex;gap:8px}.paper-nav button{width:40px;height:40px;background:#f7dce7;border-color:#e9b9ce;color:#713a57;font-size:19px}.paper-nav button:hover{background:#f1c3d7}.notes-seal{position:absolute;right:6px;bottom:18px;display:grid;place-items:center;width:54px;height:54px;border-radius:50%;border:4px double #f7c8d9;background:radial-gradient(circle at 30% 25%,#d07a9e,#893e66);box-shadow:0 8px 15px #49172c77;color:#ffe8f0;font-size:26px;transform:rotate(12deg)}.notes-spark{position:absolute;color:#ffdae8;text-shadow:0 0 20px #ff9ed1;animation:artTwinkle 2.5s ease-in-out infinite alternate}.notes-spark-one{top:0;right:4%;font-size:26px}.notes-spark-two{bottom:0;left:1%;font-size:20px;animation-delay:-1s}
+@media(max-width:700px){.notes-layout{grid-template-columns:1fr;gap:18px}.notes-index-label{margin-top:25px}.notes-footnote{margin-top:20px}.notes-stage{padding:24px 15px 28px}.notes-paper-back,.notes-paper-mid{inset:24px 15px 28px}.note-paper{min-height:350px;padding:26px 24px 20px}.paper-salutation{margin-top:28px}.note-paper #noteText{font-size:clamp(20px,6vw,25px)}.notes-seal{right:0;bottom:8px;width:46px;height:46px;font-size:22px}.paper-nav button{width:43px;height:43px}}
+@media(prefers-reduced-motion:reduce){.notes-spark{animation:none}}
+
 </style>
   </head>
 
@@ -2532,18 +2541,33 @@ dialog[open] {
             LETTER ↗</span></button>
       </section>
       <section class="pocket section" id="notes">
-        <div class="section-top">
-          <div>
+        <div class="notes-layout">
+          <div class="notes-intro">
             <p class="eyebrow">03 / A LITTLE LOVE TO KEEP</p>
-            <h2>For whenever<br><em>you need a smile.</em></h2>
+            <h2>Little notes.<br><em>Big love.</em></h2>
+            <p>For the days you need a smile, a little courage, or just a reminder that I’m always here.</p>
+            <div class="notes-index-label">PICK A NOTE <span>✦</span></div>
+            <div class="notes-index" role="group" aria-label="Choose a love note">
+              <button type="button" data-note="0" aria-label="Read love note 1" aria-pressed="true">01</button>
+              <button type="button" data-note="1" aria-label="Read love note 2" aria-pressed="false">02</button>
+              <button type="button" data-note="2" aria-label="Read love note 3" aria-pressed="false">03</button>
+              <button type="button" data-note="3" aria-label="Read love note 4" aria-pressed="false">04</button>
+              <button type="button" data-note="4" aria-label="Read love note 5" aria-pressed="false">05</button>
+            </div>
+            <p class="notes-footnote">A tiny piece of my heart, just for you. ♡</p>
           </div>
-          <p>Five little notes, all for you.<br>Open one. Then another.</p>
-        </div>
-        <div class="note-display"><span class="note-star">✧</span>
-          <p id="noteText" aria-live="polite">If today feels heavy, let this be your little reminder: you are
-            loved, exactly as you are.</p>
-          <div class="note-controls"><span id="noteNumber">01 / 05</span><button id="nextNote"
-              class="circle-btn" aria-label="Read the next love note">↗</button></div>
+          <div class="notes-stage">
+            <span class="notes-spark notes-spark-one" aria-hidden="true">✦</span><span class="notes-spark notes-spark-two" aria-hidden="true">✧</span>
+            <div class="notes-paper-back" aria-hidden="true"></div><div class="notes-paper-mid" aria-hidden="true"></div>
+            <article class="note-paper" aria-label="A love note for Roseantic">
+              <div class="paper-top"><span>FROM MY HEART TO YOURS</span><span>✦</span></div>
+              <div class="paper-salutation">For my Roseantic,</div>
+              <p id="noteText" aria-live="polite">If today feels heavy, let this be your little reminder: you are loved, exactly as you are.</p>
+              <div class="paper-sign">Always yours, <strong>Punith ♡</strong></div>
+              <div class="paper-bottom"><span id="noteNumber">01 / 05</span><div class="paper-nav"><button type="button" id="prevNote" aria-label="Read the previous love note">←</button><button type="button" id="nextNote" aria-label="Read the next love note">→</button></div></div>
+            </article>
+            <span class="notes-seal" aria-hidden="true">♡</span>
+          </div>
         </div>
       </section>
       <section class="wish section" id="wish">
@@ -2731,11 +2755,19 @@ dialog.addEventListener('click', e => {
 });
 const notes = ['If today feels heavy, let this be your little reminder: you are loved, exactly as you are.', 'My favourite thought about the future? Getting to share more of it with you.', 'You deserve a love that makes you feel safe, seen, and celebrated. I hope I give you that, every day.', 'I don’t need a special occasion to be grateful for you. But I’ll take every chance to celebrate you.', 'Whatever this next chapter brings, I’m so happy there’s an us in it.'];
 let note = 0;
-document.getElementById('nextNote').addEventListener('click', () => {
-  note = (note + 1) % notes.length;
-  document.getElementById('noteText').textContent = notes[note];
-  document.getElementById('noteNumber').textContent = `0${note+1} / 05`;
-});
+const noteText=document.getElementById('noteText');
+const noteButtons=[...document.querySelectorAll('.notes-index button')];
+function showNote(index){
+  note=(index+notes.length)%notes.length;
+  noteText.textContent=notes[note];
+  document.getElementById('noteNumber').textContent=`0${note+1} / 05`;
+  noteButtons.forEach((button,i)=>button.setAttribute('aria-pressed',String(i===note)));
+  const paper=document.querySelector('.note-paper');
+  if(!reduce && paper.animate)paper.animate([{opacity:.65,transform:'translateY(8px) rotate(-1deg)'},{opacity:1,transform:'translateY(0) rotate(0)'}],{duration:320,easing:'ease-out'});
+}
+document.getElementById('nextNote').addEventListener('click',()=>showNote(note+1));
+document.getElementById('prevNote').addEventListener('click',()=>showNote(note-1));
+noteButtons.forEach((button,i)=>button.addEventListener('click',()=>showNote(i)));
 let out = false;
 const wish = document.getElementById('wishButton');
 wish.addEventListener('click', () => {
