@@ -2440,6 +2440,13 @@ dialog[open] {
 @media(max-width:700px){.notes-layout{grid-template-columns:1fr;gap:18px}.notes-index-label{margin-top:25px}.notes-footnote{margin-top:20px}.notes-stage{padding:24px 15px 28px}.notes-paper-back,.notes-paper-mid{inset:24px 15px 28px}.note-paper{min-height:350px;padding:26px 24px 20px}.paper-salutation{margin-top:28px}.note-paper #noteText{font-size:clamp(20px,6vw,25px)}.notes-seal{right:0;bottom:8px;width:46px;height:46px;font-size:22px}.paper-nav button{width:43px;height:43px}}
 @media(prefers-reduced-motion:reduce){.notes-spark{animation:none}}
 
+
+/* Open-when notes */
+.openwhen-heading{display:flex;justify-content:space-between;align-items:end;gap:40px;margin-bottom:35px}.openwhen-heading>p{max-width:330px;color:#eed6e2;font-size:14px;line-height:1.8;border-left:1px solid #e6b3ce70;padding-left:22px}.openwhen-heading h2{margin-bottom:0}
+.notes-index.envelope-choices{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px;margin:0 0 25px}.notes-index.envelope-choices button{position:relative;display:flex;flex-direction:column;align-items:flex-start;justify-content:flex-end;gap:20px;width:auto;height:auto;min-height:188px;padding:18px;text-align:left;border-radius:16px;border:1px solid #f7c7dc45;background:linear-gradient(160deg,#9c5b8050,#321a30b5);box-shadow:0 10px 25px #12061633;color:#fff1f6;transform:none;overflow:hidden}.notes-index.envelope-choices button:hover{transform:translateY(-5px);background:linear-gradient(160deg,#bd789b66,#43223d)}.notes-index.envelope-choices button[aria-pressed="true"]{background:linear-gradient(155deg,#f4c7d9,#e6acc7);border-color:#fff1f7;color:#68354e;box-shadow:0 12px 30px #ef95be3a}.tiny-envelope{position:relative;width:58px;height:42px;display:grid;place-items:center;border-radius:5px;background:linear-gradient(145deg,#ffe8ef,#efb6cf);border:1px solid #fff9;box-shadow:0 7px 12px #30101e40;overflow:hidden;transform:rotate(-7deg);flex:none}.tiny-envelope:before{content:'';position:absolute;inset:0;background:#d894b2;clip-path:polygon(0 0,50% 57%,100% 0)}.tiny-envelope i{position:relative;z-index:1;display:grid;place-items:center;width:19px;height:19px;margin-top:7px;border-radius:50%;background:#a34f78;color:#ffe7f0;font:normal 13px sans-serif}.choice-title{font:800 14px/1.3 var(--font);letter-spacing:-.02em}.choice-title small{display:block;margin-bottom:5px;font:800 8px var(--font);letter-spacing:.13em;opacity:.7}.choice-number{position:absolute;right:15px;top:14px;font:800 9px var(--font);opacity:.65}
+.note-paper.opened-note{display:grid;grid-template-columns:190px 1fr;gap:32px;align-items:center;min-height:260px;padding:30px 35px;border-radius:20px;background:linear-gradient(120deg,#482340,#301a37);border:1px solid #efb9d24f;box-shadow:0 15px 0 #241025,0 28px 55px #08020d66;color:#fff1f5}.note-paper.opened-note:before{display:none}.note-visual{position:relative;display:grid;place-items:center;width:170px;height:170px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#ffcce0aa,#cf79a866 45%,#65294855 70%);border:1px solid #ffdfeb88;box-shadow:inset 9px 9px 24px #fff3,inset -12px -14px 25px #3b142a77,0 0 36px #ed90bd55}.note-visual-heart{font-size:90px;line-height:1;color:#ffeaf3;text-shadow:0 4px 20px #ffaed1}.note-visual-star{position:absolute;right:1px;top:0;color:#ffe9f2;font-size:25px}.note-visual-small{position:absolute;bottom:24px;text-align:center;color:#fff4f6;font:800 8px/1.4 var(--font);letter-spacing:.14em}.note-content{min-width:0}.note-topline,.note-controls-row{display:flex;justify-content:space-between;align-items:center;gap:16px;font:800 9px var(--font);letter-spacing:.16em;color:#eab6ce}.note-paper.opened-note #noteText{min-height:0;margin:20px 0;color:#fff1f5;font:800 clamp(22px,2.5vw,34px)/1.35 var(--font);letter-spacing:-.04em}.note-signature{color:#dcaec5;font-size:12px}.note-signature strong{color:#ffdae9;margin-left:4px}.note-controls-row{margin-top:22px;padding-top:15px;border-top:1px solid #f3bfd52e}.opened-note .paper-nav button{color:#ffe4ef;background:#ffffff10;border-color:#ffd2e066}.opened-note .paper-nav button:hover{background:#ffffff25}
+@media(max-width:700px){.openwhen-heading{display:block;margin-bottom:23px}.openwhen-heading>p{margin-top:18px;padding-left:15px}.notes-index.envelope-choices{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.notes-index.envelope-choices button{min-height:136px;padding:14px;gap:13px}.notes-index.envelope-choices button:last-child{grid-column:1/-1;min-height:105px;flex-direction:row;align-items:center;justify-content:flex-start}.tiny-envelope{width:48px;height:35px}.choice-title{font-size:13px}.note-paper.opened-note{grid-template-columns:1fr;gap:18px;padding:23px;min-height:0}.note-visual{width:98px;height:98px}.note-visual-heart{font-size:53px}.note-visual-small{bottom:13px;font-size:6px}.note-visual-star{font-size:17px}.note-paper.opened-note #noteText{font-size:23px}.note-topline{font-size:8px}.note-controls-row{margin-top:18px}}
+
 </style>
   </head>
 
@@ -2541,34 +2548,18 @@ dialog[open] {
             LETTER ↗</span></button>
       </section>
       <section class="pocket section" id="notes">
-        <div class="notes-layout">
-          <div class="notes-intro">
-            <p class="eyebrow">03 / A LITTLE LOVE TO KEEP</p>
-            <h2>Little notes.<br><em>Big love.</em></h2>
-            <p>For the days you need a smile, a little courage, or just a reminder that I’m always here.</p>
-            <div class="notes-index-label">PICK A NOTE <span>✦</span></div>
-            <div class="notes-index" role="group" aria-label="Choose a love note">
-              <button type="button" data-note="0" aria-label="Read love note 1" aria-pressed="true">01</button>
-              <button type="button" data-note="1" aria-label="Read love note 2" aria-pressed="false">02</button>
-              <button type="button" data-note="2" aria-label="Read love note 3" aria-pressed="false">03</button>
-              <button type="button" data-note="3" aria-label="Read love note 4" aria-pressed="false">04</button>
-              <button type="button" data-note="4" aria-label="Read love note 5" aria-pressed="false">05</button>
-            </div>
-            <p class="notes-footnote">A tiny piece of my heart, just for you. ♡</p>
-          </div>
-          <div class="notes-stage">
-            <span class="notes-spark notes-spark-one" aria-hidden="true">✦</span><span class="notes-spark notes-spark-two" aria-hidden="true">✧</span>
-            <div class="notes-paper-back" aria-hidden="true"></div><div class="notes-paper-mid" aria-hidden="true"></div>
-            <article class="note-paper" aria-label="A love note for Roseantic">
-              <div class="paper-top"><span>FROM MY HEART TO YOURS</span><span>✦</span></div>
-              <div class="paper-salutation">For my Roseantic,</div>
-              <p id="noteText" aria-live="polite">If today feels heavy, let this be your little reminder: you are loved, exactly as you are.</p>
-              <div class="paper-sign">Always yours, <strong>Punith ♡</strong></div>
-              <div class="paper-bottom"><span id="noteNumber">01 / 05</span><div class="paper-nav"><button type="button" id="prevNote" aria-label="Read the previous love note">←</button><button type="button" id="nextNote" aria-label="Read the next love note">→</button></div></div>
-            </article>
-            <span class="notes-seal" aria-hidden="true">♡</span>
-          </div>
+        <div class="openwhen-heading"><div><p class="eyebrow">03 / LITTLE PIECES OF MY HEART</p><h2>Open when<br><em>you need me.</em></h2></div><p>Five little reminders, wrapped up for you.<br>Choose the one your heart needs today.</p></div>
+        <div class="notes-index envelope-choices" role="group" aria-label="Choose an open-when note">
+          <button type="button" data-note="0" aria-label="Open when you need comfort" aria-pressed="true"><span class="tiny-envelope" aria-hidden="true"><i>♡</i></span><span class="choice-title"><small>OPEN WHEN</small>You need comfort</span><span class="choice-number">01</span></button>
+          <button type="button" data-note="1" aria-label="Open when you think of us" aria-pressed="false"><span class="tiny-envelope" aria-hidden="true"><i>♡</i></span><span class="choice-title"><small>OPEN WHEN</small>You think of us</span><span class="choice-number">02</span></button>
+          <button type="button" data-note="2" aria-label="Open when you need a reminder" aria-pressed="false"><span class="tiny-envelope" aria-hidden="true"><i>♡</i></span><span class="choice-title"><small>OPEN WHEN</small>You need a reminder</span><span class="choice-number">03</span></button>
+          <button type="button" data-note="3" aria-label="Open when you need a smile" aria-pressed="false"><span class="tiny-envelope" aria-hidden="true"><i>♡</i></span><span class="choice-title"><small>OPEN WHEN</small>You need a smile</span><span class="choice-number">04</span></button>
+          <button type="button" data-note="4" aria-label="Open when you dream ahead" aria-pressed="false"><span class="tiny-envelope" aria-hidden="true"><i>♡</i></span><span class="choice-title"><small>OPEN WHEN</small>You dream ahead</span><span class="choice-number">05</span></button>
         </div>
+        <article class="note-paper opened-note" aria-label="A love note for Roseantic">
+          <div class="note-visual" aria-hidden="true"><span class="note-visual-star">✦</span><span class="note-visual-heart">♡</span><span class="note-visual-small">A NOTE<br>FOR YOU</span></div>
+          <div class="note-content"><div class="note-topline"><span>A LITTLE LOVE, FROM ME TO YOU</span><span id="noteNumber">01 / 05</span></div><p id="noteText" aria-live="polite">If today feels heavy, let this be your little reminder: you are loved, exactly as you are.</p><div class="note-signature">With all my love, <strong>Punith ♡</strong></div><div class="note-controls-row"><span>KEEP THIS CLOSE ♡</span><div class="paper-nav"><button type="button" id="prevNote" aria-label="Read the previous love note">←</button><button type="button" id="nextNote" aria-label="Read the next love note">→</button></div></div></div>
+        </article>
       </section>
       <section class="wish section" id="wish">
         <p class="eyebrow">04 / ONE WISH, ALL YOURS</p>
