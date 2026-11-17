@@ -2488,6 +2488,23 @@ dialog[open] {
 @media(prefers-reduced-motion:reduce){.jar-spark{animation:none}}
 
 
+/* A little birthday theatre for the wish and cake. */
+.wish{position:relative;overflow:hidden;padding-top:clamp(80px,9vw,125px);padding-bottom:clamp(80px,9vw,120px);background:radial-gradient(ellipse at 50% 44%,#913c69 0%,#4b1d40 46%,#1f1028 100%)}
+.wish:before,.wish:after{content:'✦';position:absolute;color:#ffd6e8;opacity:.55;text-shadow:0 0 18px #ffb4dc;pointer-events:none}
+.wish:before{left:9%;top:15%;font-size:25px}.wish:after{right:8%;top:25%;font-size:17px}
+.wish-heading{max-width:760px;margin:0 auto 36px}.wish-heading .eyebrow{margin-bottom:18px}.wish-heading h2{font-size:clamp(42px,5.7vw,78px);line-height:1.08;letter-spacing:-.055em;margin:0 0 20px}.wish-heading p:not(.eyebrow){font-size:clamp(14px,1.25vw,16px);line-height:1.8;color:#f6dce9;margin:0 auto;max-width:570px}
+.birthday-display{position:relative;isolation:isolate;max-width:1050px;margin:0 auto 25px;border:1px solid #ffd6e15c;border-radius:clamp(24px,4vw,42px);overflow:hidden;background:radial-gradient(ellipse at 50% 56%,#f6a1c132 0%,#bb5c8e24 37%,transparent 65%),linear-gradient(145deg,#643253bd,#291428e8);box-shadow:0 16px 0 #2510259c,0 35px 80px #10061486,inset 0 1px #ffffff32}
+.birthday-display:before{content:'';position:absolute;z-index:-1;left:50%;top:6%;width:min(66%,570px);height:83%;transform:translateX(-50%);border:1px solid #ffe4ef4a;border-radius:50% 50% 45% 45%;box-shadow:0 0 0 12px #ffd4e609,0 0 0 13px #ffdce616,inset 0 0 70px #f49ac826}
+.birthday-display:after{content:'';position:absolute;left:9%;right:9%;bottom:14%;height:27%;border:1px solid #ffd6e22b;border-radius:50%;transform:rotate(-3deg);pointer-events:none;z-index:-1}
+.birthday-display-top{display:flex;align-items:center;justify-content:space-between;padding:24px 30px 0;color:#f6c8dc;font:800 9px var(--font);letter-spacing:.19em;text-transform:uppercase}.birthday-display-top span:last-child{color:#ffdae9}
+.birthday-display .cake-stage{height:clamp(360px,41vw,470px);width:min(100%,820px);margin:-4px auto 0;filter:drop-shadow(0 20px 28px #17071890)}
+.birthday-stage-stars{position:absolute;inset:0;pointer-events:none;color:#ffdaec;text-shadow:0 0 15px #ffaed6}.birthday-stage-stars span{position:absolute;animation:artTwinkle 2.8s ease-in-out infinite alternate}.birthday-stage-stars span:nth-child(1){top:25%;left:11%;font-size:24px}.birthday-stage-stars span:nth-child(2){top:18%;right:13%;font-size:17px;animation-delay:-1s}.birthday-stage-stars span:nth-child(3){bottom:25%;left:16%;font-size:16px;animation-delay:-1.5s}.birthday-stage-stars span:nth-child(4){bottom:23%;right:16%;font-size:26px;animation-delay:-.6s}
+.birthday-display-bottom{display:flex;align-items:center;justify-content:center;gap:14px;padding:0 20px 25px;color:#edbed4;font:800 9px var(--font);letter-spacing:.17em;text-transform:uppercase}.birthday-display-bottom:before,.birthday-display-bottom:after{content:'';width:38px;height:1px;background:#e8b2cc66}
+.wish .cake-hint{font-size:10px;letter-spacing:.16em;color:#f7c8df;margin:0 0 16px}.wish .btn{min-height:54px;padding:16px 27px;box-shadow:0 9px 0 #a75780,0 18px 34px #16061775,inset 0 1px #fff8}
+@media(max-width:700px){.wish{padding-inline:6%}.wish-heading{margin-bottom:28px}.wish-heading h2{font-size:clamp(38px,10.4vw,56px)}.birthday-display{border-radius:25px}.birthday-display-top{padding:20px 18px 0;font-size:8px}.birthday-display .cake-stage{height:clamp(260px,78vw,340px);width:100%}.birthday-display:before{width:79%;top:11%;height:75%}.birthday-display-bottom{padding-bottom:20px;font-size:8px}.birthday-stage-stars span:nth-child(1){left:5%}.birthday-stage-stars span:nth-child(2){right:6%}.wish .cake-hint{font-size:9px;line-height:1.6}.wish .btn{max-width:100%;font-size:12px}}
+@media(prefers-reduced-motion:reduce){.birthday-stage-stars span{animation:none}}
+
+
 </style>
   </head>
 
@@ -2606,10 +2623,10 @@ dialog[open] {
         </div>
       </section>
       <section class="wish section" id="wish">
-        <p class="eyebrow">04 / ONE WISH, ALL YOURS</p>
-        <h2>Close your eyes.<br><em>I hope it comes true.</em></h2>
-        <p>Whatever you wish for, I hope this year brings you closer to it.<br>And I hope I get to be right
-          there, celebrating with you.</p>
+        <div class="wish-heading"><p class="eyebrow">04 / ONE WISH, ALL YOURS</p><h2>A little wish.<br><em>A lot of love.</em></h2><p>Close your eyes, my love. Whatever you wish for, I hope this year brings you closer to it—and I hope I’m right beside you, celebrating every little moment.</p></div>
+        <div class="birthday-display">
+          <div class="birthday-display-top"><span>A MOMENT FOR YOU</span><span>27 NOVEMBER ♡</span></div>
+          <div class="birthday-stage-stars" aria-hidden="true"><span>✧</span><span>✦</span><span>✦</span><span>✧</span></div>
         <div class="cake-stage" id="cakeStage" role="img"
           aria-label="A birthday cake with three candles. Use the button below to make a wish and cut the cake.">
           <div class="cake" aria-hidden="true">
@@ -2621,8 +2638,9 @@ dialog[open] {
             <div class="plate"></div>
           </div>
         </div>
-        <p class="cake-hint" id="cakeHint">Preparing a little birthday magic ✨</p><button class="btn"
-          id="wishButton">Make your birthday wish <span>✧</span></button>
+          <div class="birthday-display-bottom" aria-hidden="true">made with all my love</div>
+        </div>
+        <p class="cake-hint" id="cakeHint">Preparing a little birthday magic ✨</p><button class="btn" id="wishButton">Make your birthday wish <span>✧</span></button>
         <p class="wish-result" id="wishResult" role="status"></p>
       </section>
     </main>
@@ -3028,6 +3046,14 @@ wish.addEventListener('click', () => {
     disc(1.95, .18, '#ddbbc5');
     const elapsed = state === 'cutting' ? t - start : state === 'done' ? 6500 : 0;
     const shift = ease((elapsed - 4800) / 1300);
+    const spongeShade = ctx.createLinearGradient(ox - scale * 1.75, 0, ox + scale * 1.75, 0);
+    spongeShade.addColorStop(0, '#c77c91');spongeShade.addColorStop(.23, '#efb4aa');spongeShade.addColorStop(.52, '#ffe1d3');spongeShade.addColorStop(.8, '#edacaf');spongeShade.addColorStop(1, '#b96c88');
+    const jamShade = ctx.createLinearGradient(ox - scale * 1.75, 0, ox + scale * 1.75, 0);
+    jamShade.addColorStop(0, '#934969');jamShade.addColorStop(.5, '#d47b9c');jamShade.addColorStop(1, '#9d4b70');
+    const frostingShade = ctx.createLinearGradient(ox - scale * 1.75, 0, ox + scale * 1.75, 0);
+    frostingShade.addColorStop(0, '#c66e96');frostingShade.addColorStop(.5, '#ffd9e2');frostingShade.addColorStop(1, '#c8799c');
+    const topShade = ctx.createRadialGradient(ox - scale * .5, oy - scale * 1.35, 0, ox, oy - scale * 1.05, scale * 2.5);
+    topShade.addColorStop(0, '#fffaf1');topShade.addColorStop(.55, '#ffece6');topShade.addColorStop(1, '#edb7c7');
     const layers = [
       [.23, .29, 'sponge'],
       [.52, .08, 'jam'],
@@ -3043,9 +3069,9 @@ wish.addEventListener('click', () => {
         part = mid >= A && mid <= B,
         sh = part ? shift : 0;
       for (const [y, ht, type] of layers) {
-        poly([point(1.7, a, y, sh), point(1.7, b, y, sh), point(1.7, b, y + ht, sh), point(1.7, a, y + ht, sh)], colorSide(mid, type))
+        poly([point(1.7, a, y, sh), point(1.7, b, y, sh), point(1.7, b, y + ht, sh), point(1.7, a, y + ht, sh)], (type === 'sponge' ? spongeShade : type === 'jam' ? jamShade : frostingShade))
       }
-      poly([point(0, 0, 1.41, sh), point(1.7, a, 1.41, sh), point(1.7, b, 1.41, sh)], part ? '#ffe6de' : '#fff0e6')
+      poly([point(0, 0, 1.41, sh), point(1.7, a, 1.41, sh), point(1.7, b, 1.41, sh)], part ? '#ffe6de' : topShade)
     }
     if (shift > .005) {
       for (const ang of [A, B])
@@ -3065,6 +3091,15 @@ wish.addEventListener('click', () => {
         ctx.stroke()
       }
     }
+    // Paint the uncut frosting as one surface to avoid seams between mesh segments.
+    if (shift <= .005) {
+      ctx.beginPath();
+      for (let i = 0; i < 64; i++) {
+        const p = project(point(1.7, i * TAU / 64, 1.41, 0));
+        if (i === 0) ctx.moveTo(p[0], p[1]); else ctx.lineTo(p[0], p[1]);
+      }
+      ctx.closePath();ctx.fillStyle = topShade;ctx.fill();
+    }
     // Frosting rosettes and strawberries sit on the upper rim.
     for (let i = 0; i < 20; i++) {
       let a = i * TAU / 20,
@@ -3072,7 +3107,9 @@ wish.addEventListener('click', () => {
         p = project(point(1.52, a, 1.44, sh));
       ctx.beginPath();
       ctx.ellipse(p[0], p[1], scale * .115, scale * .075, 0, 0, TAU);
-      ctx.fillStyle = i % 4 ? '#fff4e9' : '#e7a9bd';
+      const cream = ctx.createRadialGradient(p[0] - scale * .035, p[1] - scale * .03, 0, p[0], p[1], scale * .14);
+      cream.addColorStop(0, '#fffdf7');cream.addColorStop(.55, i % 4 ? '#ffedea' : '#f3c1d2');cream.addColorStop(1, i % 4 ? '#eac4ca' : '#cf83a4');
+      ctx.fillStyle = cream;
       ctx.fill();
       ctx.strokeStyle = '#e8bcc5';
       ctx.lineWidth = 1;
@@ -3277,6 +3314,9 @@ wish.addEventListener('click', () => {
   button.textContent = 'Make a wish & blow out the candles ✧';
   hint.textContent = 'A little birthday magic, made just for you';
   button.addEventListener('click', () => {
+    if (state === 'ready' || state === 'blown') {
+      stage.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'center' });
+    }
     if (state === 'ready') {
       state = 'counting';
       countStart = performance.now();
