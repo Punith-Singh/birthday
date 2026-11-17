@@ -2447,6 +2447,18 @@ dialog[open] {
 .note-paper.opened-note{display:grid;grid-template-columns:190px 1fr;gap:32px;align-items:center;min-height:260px;padding:30px 35px;border-radius:20px;background:linear-gradient(120deg,#482340,#301a37);border:1px solid #efb9d24f;box-shadow:0 15px 0 #241025,0 28px 55px #08020d66;color:#fff1f5}.note-paper.opened-note:before{display:none}.note-visual{position:relative;display:grid;place-items:center;width:170px;height:170px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#ffcce0aa,#cf79a866 45%,#65294855 70%);border:1px solid #ffdfeb88;box-shadow:inset 9px 9px 24px #fff3,inset -12px -14px 25px #3b142a77,0 0 36px #ed90bd55}.note-visual-heart{font-size:90px;line-height:1;color:#ffeaf3;text-shadow:0 4px 20px #ffaed1}.note-visual-star{position:absolute;right:1px;top:0;color:#ffe9f2;font-size:25px}.note-visual-small{position:absolute;bottom:24px;text-align:center;color:#fff4f6;font:800 8px/1.4 var(--font);letter-spacing:.14em}.note-content{min-width:0}.note-topline,.note-controls-row{display:flex;justify-content:space-between;align-items:center;gap:16px;font:800 9px var(--font);letter-spacing:.16em;color:#eab6ce}.note-paper.opened-note #noteText{min-height:0;margin:20px 0;color:#fff1f5;font:800 clamp(22px,2.5vw,34px)/1.35 var(--font);letter-spacing:-.04em}.note-signature{color:#dcaec5;font-size:12px}.note-signature strong{color:#ffdae9;margin-left:4px}.note-controls-row{margin-top:22px;padding-top:15px;border-top:1px solid #f3bfd52e}.opened-note .paper-nav button{color:#ffe4ef;background:#ffffff10;border-color:#ffd2e066}.opened-note .paper-nav button:hover{background:#ffffff25}
 @media(max-width:700px){.openwhen-heading{display:block;margin-bottom:23px}.openwhen-heading>p{margin-top:18px;padding-left:15px}.notes-index.envelope-choices{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.notes-index.envelope-choices button{min-height:136px;padding:14px;gap:13px}.notes-index.envelope-choices button:last-child{grid-column:1/-1;min-height:105px;flex-direction:row;align-items:center;justify-content:flex-start}.tiny-envelope{width:48px;height:35px}.choice-title{font-size:13px}.note-paper.opened-note{grid-template-columns:1fr;gap:18px;padding:23px;min-height:0}.note-visual{width:98px;height:98px}.note-visual-heart{font-size:53px}.note-visual-small{bottom:13px;font-size:6px}.note-visual-star{font-size:17px}.note-paper.opened-note #noteText{font-size:23px}.note-topline{font-size:8px}.note-controls-row{margin-top:18px}}
 
+
+/* A jar of little love notes */
+.lovejar-heading{display:flex;justify-content:space-between;align-items:end;gap:35px;margin-bottom:34px}.lovejar-heading h2{margin-bottom:0}.lovejar-heading>p{max-width:330px;font-size:14px;line-height:1.85;color:#eed6e1;border-left:1px solid #efbbd36b;padding-left:22px}
+.lovejar-scene{position:relative;display:grid;grid-template-columns:.85fr 1.15fr;gap:clamp(35px,6vw,90px);align-items:center;padding:42px 6%;border:1px solid #f6bedb4a;border-radius:30px;background:radial-gradient(ellipse at 25% 46%,#c05a8a48,transparent 42%),linear-gradient(130deg,#532742ba,#24142de8);box-shadow:0 16px 0 #241126,0 35px 70px #0c041079,inset 0 1px #ffffff30;overflow:hidden}.lovejar-scene:after{content:'✧';position:absolute;right:-40px;bottom:-165px;font-size:400px;line-height:1;color:#f1add00c;pointer-events:none}
+.jar-side{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:380px}.jar-side:before{content:'';position:absolute;bottom:42px;width:270px;height:45px;background:radial-gradient(ellipse,#ee9bc576,transparent 70%);filter:blur(12px)}.jar-button{position:relative;width:230px;height:280px;border:0;background:none;padding:0;transform-origin:50% 80%;filter:drop-shadow(0 20px 18px #10041575);transition:transform .3s;cursor:pointer}.jar-button:hover{transform:translateY(-8px) rotate(-3deg)}.jar-button:focus-visible{outline:3px solid #ffcce1;outline-offset:8px;border-radius:30px}
+.jar-lid{position:absolute;z-index:4;top:4px;left:35px;width:160px;height:34px;border-radius:12px 12px 7px 7px;border:1px solid #ffe9c3;background:linear-gradient(#e9caa4,#b87f70 55%,#8a5362);box-shadow:inset 0 5px #ffe5c466,0 8px 12px #24102155}.jar-rim{position:absolute;z-index:3;top:30px;left:29px;width:172px;height:29px;border-radius:9px;background:linear-gradient(90deg,#f9d2e2a8,#fff7,#ec9cc689);border:1px solid #ffeaf4bb;box-shadow:inset 0 -5px 8px #a7588d55}.jar-glass{position:absolute;top:45px;left:18px;width:194px;height:210px;border-radius:35px 35px 56px 56px;border:2px solid #ffe9f4aa;background:linear-gradient(100deg,#f6bddb66 0%,#fff3 22%,#d784bc33 54%,#f8ccdf66 90%);box-shadow:inset 9px 2px 20px #fff3,inset -12px -12px 25px #5e234e99,0 0 35px #f39ac16b;overflow:hidden}.jar-shine{position:absolute;left:13px;top:30px;width:10px;height:112px;border-radius:50%;background:#fff9;filter:blur(3px);transform:rotate(5deg)}.jar-base{position:absolute;bottom:18px;left:26px;width:178px;height:35px;border-radius:50%;border-bottom:3px solid #ffdfeb9c;background:linear-gradient(#e9a9cc33,#fcd6e94a);z-index:3}
+.jar-note{position:absolute;display:grid;place-items:center;width:48px;height:32px;border-radius:4px;background:linear-gradient(145deg,#fff2f4,#edb0ce);color:#b25380;font:800 20px sans-serif;box-shadow:0 4px 8px #4c173f55}.jar-note-a{left:26px;bottom:25px;transform:rotate(-24deg)}.jar-note-b{left:77px;bottom:14px;transform:rotate(17deg)}.jar-note-c{right:19px;bottom:31px;transform:rotate(-12deg)}.jar-note-d{left:49px;bottom:58px;transform:rotate(12deg)}.jar-note-e{right:29px;bottom:67px;transform:rotate(25deg)}.jar-label{position:absolute;z-index:2;left:41px;top:47px;width:108px;padding:10px 4px;border-radius:7px;background:#fff5edee;box-shadow:0 5px 14px #4113354d;transform:rotate(-4deg);color:#9b5574}.jar-label small,.jar-label b,.jar-label i{display:block;text-align:center}.jar-label small{font:800 7px var(--font);letter-spacing:.17em}.jar-label b{font:800 17px var(--font);letter-spacing:-.04em}.jar-label i{font:normal 14px sans-serif}
+.jar-caption{position:relative;margin-top:1px;color:#f7cede;font-size:9px;font-weight:800;letter-spacing:.15em;text-align:center}.jar-caption span{font-size:15px;margin-left:5px}.jar-spark{position:absolute;color:#ffe3ef;text-shadow:0 0 15px #ffb6dc;animation:artTwinkle 2.5s ease-in-out infinite alternate}.jar-spark-a{top:27px;left:15%;font-size:25px}.jar-spark-b{top:80px;right:10%;font-size:17px;animation-delay:-1s}.jar-spark-c{bottom:85px;left:5%;font-size:19px;animation-delay:-1.6s}
+.jar-story{position:relative;z-index:2;min-width:0;padding:5px 0}.jar-story-top{display:flex;justify-content:space-between;align-items:center;color:#e8adc9;font:800 9px var(--font);letter-spacing:.16em;border-bottom:1px solid #f3bed630;padding-bottom:18px}.jar-story-top span:last-child{font-size:18px}.jar-prompt,.jar-reveal{padding-top:20px}.jar-prompt[hidden],.jar-reveal[hidden]{display:none}.jar-quote{display:block;height:54px;font:800 88px/1 var(--font);color:#e997bf}.jar-prompt h3{font:800 clamp(28px,3.2vw,43px)/1.17 var(--font);letter-spacing:-.055em;color:#fff2f7;margin:15px 0}.jar-prompt h3 em{font-style:normal;color:#ffbddd}.jar-prompt p{color:#e6c6d7;font-size:14px}.jar-pick{display:inline-flex;gap:35px;align-items:center;margin-top:15px;border:1px solid #ffe7f1;border-radius:50px;background:linear-gradient(135deg,#ffe3ee,#f3a9c9);color:#6e2b4d;padding:14px 20px;font:800 11px var(--font);box-shadow:0 8px 22px #da74a444;transition:transform .2s}.jar-pick:hover{transform:translateY(-3px)}.jar-pick span{font-size:17px}.jar-note-label{color:#f5b3d1;font:800 9px var(--font);letter-spacing:.16em}.jar-reveal #noteText{color:#fff3f7;font:800 clamp(25px,3vw,40px)/1.3 var(--font);letter-spacing:-.045em;margin:19px 0}.jar-signature{font-size:12px;color:#e4b7cb}.jar-signature strong{color:#ffdae9}.jar-nav{display:flex;align-items:center;justify-content:space-between;margin-top:24px;padding-top:16px;border-top:1px solid #efb8d32b;color:#dab0c5;font:800 9px var(--font);letter-spacing:.16em}.jar-nav div{display:flex;gap:8px}.jar-nav button{width:43px;height:43px;border-radius:50%;border:1px solid #edbdd474;background:#ffffff0c;color:#ffe7f0;font-size:20px;transition:background .2s,transform .2s}.jar-nav button:hover{background:#ffffff25;transform:translateY(-2px)}
+@media(max-width:700px){.lovejar-heading{display:block;margin-bottom:25px}.lovejar-heading>p{margin-top:18px;padding-left:15px}.lovejar-scene{grid-template-columns:1fr;gap:18px;padding:24px 22px 30px}.jar-side{min-height:275px}.jar-button{transform:scale(.78);margin:-30px 0 -25px}.jar-button:hover{transform:scale(.78)}.jar-side:before{bottom:30px}.jar-caption{font-size:8px}.jar-spark-a{top:5px}.jar-story-top{padding-bottom:13px}.jar-prompt h3{font-size:30px}.jar-reveal #noteText{font-size:25px}.jar-nav{margin-top:20px}}
+@media(prefers-reduced-motion:reduce){.jar-spark{animation:none}}
+
 </style>
   </head>
 
@@ -2548,18 +2560,21 @@ dialog[open] {
             LETTER ↗</span></button>
       </section>
       <section class="pocket section" id="notes">
-        <div class="openwhen-heading"><div><p class="eyebrow">03 / LITTLE PIECES OF MY HEART</p><h2>Open when<br><em>you need me.</em></h2></div><p>Five little reminders, wrapped up for you.<br>Choose the one your heart needs today.</p></div>
-        <div class="notes-index envelope-choices" role="group" aria-label="Choose an open-when note">
-          <button type="button" data-note="0" aria-label="Open when you need comfort" aria-pressed="true"><span class="tiny-envelope" aria-hidden="true"><i>♡</i></span><span class="choice-title"><small>OPEN WHEN</small>You need comfort</span><span class="choice-number">01</span></button>
-          <button type="button" data-note="1" aria-label="Open when you think of us" aria-pressed="false"><span class="tiny-envelope" aria-hidden="true"><i>♡</i></span><span class="choice-title"><small>OPEN WHEN</small>You think of us</span><span class="choice-number">02</span></button>
-          <button type="button" data-note="2" aria-label="Open when you need a reminder" aria-pressed="false"><span class="tiny-envelope" aria-hidden="true"><i>♡</i></span><span class="choice-title"><small>OPEN WHEN</small>You need a reminder</span><span class="choice-number">03</span></button>
-          <button type="button" data-note="3" aria-label="Open when you need a smile" aria-pressed="false"><span class="tiny-envelope" aria-hidden="true"><i>♡</i></span><span class="choice-title"><small>OPEN WHEN</small>You need a smile</span><span class="choice-number">04</span></button>
-          <button type="button" data-note="4" aria-label="Open when you dream ahead" aria-pressed="false"><span class="tiny-envelope" aria-hidden="true"><i>♡</i></span><span class="choice-title"><small>OPEN WHEN</small>You dream ahead</span><span class="choice-number">05</span></button>
+        <div class="lovejar-heading"><div><p class="eyebrow">03 / A LITTLE MAGIC FOR YOU</p><h2>A jar full<br><em>of my love.</em></h2></div><p>Whenever you need a little reminder of how loved you are, there’s one waiting for you here.</p></div>
+        <div class="lovejar-scene">
+          <div class="jar-side"><span class="jar-spark jar-spark-a" aria-hidden="true">✧</span><span class="jar-spark jar-spark-b" aria-hidden="true">✦</span><span class="jar-spark jar-spark-c" aria-hidden="true">✧</span>
+            <button type="button" id="drawNote" class="jar-button" aria-label="Draw a love note from the jar">
+              <span class="jar-lid" aria-hidden="true"></span><span class="jar-rim" aria-hidden="true"></span>
+              <span class="jar-glass" aria-hidden="true"><span class="jar-shine"></span><span class="jar-note jar-note-a">♡</span><span class="jar-note jar-note-b">✦</span><span class="jar-note jar-note-c">♡</span><span class="jar-note jar-note-d">♡</span><span class="jar-note jar-note-e">✧</span><span class="jar-label"><small>FOR MY</small><b>Roseantic</b><i>♡</i></span></span>
+              <span class="jar-base" aria-hidden="true"></span>
+            </button>
+            <span class="jar-caption">TAP THE JAR FOR A LITTLE LOVE <span aria-hidden="true">↗</span></span>
+          </div>
+          <div class="jar-story"><div class="jar-story-top"><span>FROM MY HEART TO YOURS</span><span>✦</span></div>
+            <div id="notePrompt" class="jar-prompt"><span class="jar-quote" aria-hidden="true">“</span><h3>Some things are<br><em>better said often.</em></h3><p>I’ve tucked five little notes in here, just for you.</p><button class="jar-pick" id="pickNote" type="button">Pick a little note <span>↗</span></button></div>
+            <div id="noteReveal" class="jar-reveal" hidden><span class="jar-note-label">A LITTLE REMINDER FOR YOU</span><p id="noteText" aria-live="polite"></p><div class="jar-signature">Always yours, <strong>Punith ♡</strong></div><div class="jar-nav"><span id="noteNumber">01 / 05</span><div><button type="button" id="prevNote" aria-label="Read the previous love note">←</button><button type="button" id="nextNote" aria-label="Read the next love note">→</button></div></div></div>
+          </div>
         </div>
-        <article class="note-paper opened-note" aria-label="A love note for Roseantic">
-          <div class="note-visual" aria-hidden="true"><span class="note-visual-star">✦</span><span class="note-visual-heart">♡</span><span class="note-visual-small">A NOTE<br>FOR YOU</span></div>
-          <div class="note-content"><div class="note-topline"><span>A LITTLE LOVE, FROM ME TO YOU</span><span id="noteNumber">01 / 05</span></div><p id="noteText" aria-live="polite">If today feels heavy, let this be your little reminder: you are loved, exactly as you are.</p><div class="note-signature">With all my love, <strong>Punith ♡</strong></div><div class="note-controls-row"><span>KEEP THIS CLOSE ♡</span><div class="paper-nav"><button type="button" id="prevNote" aria-label="Read the previous love note">←</button><button type="button" id="nextNote" aria-label="Read the next love note">→</button></div></div></div>
-        </article>
       </section>
       <section class="wish section" id="wish">
         <p class="eyebrow">04 / ONE WISH, ALL YOURS</p>
@@ -2745,20 +2760,24 @@ dialog.addEventListener('click', e => {
   }
 });
 const notes = ['If today feels heavy, let this be your little reminder: you are loved, exactly as you are.', 'My favourite thought about the future? Getting to share more of it with you.', 'You deserve a love that makes you feel safe, seen, and celebrated. I hope I give you that, every day.', 'I don’t need a special occasion to be grateful for you. But I’ll take every chance to celebrate you.', 'Whatever this next chapter brings, I’m so happy there’s an us in it.'];
-let note = 0;
-const noteText=document.getElementById('noteText');
-const noteButtons=[...document.querySelectorAll('.notes-index button')];
-function showNote(index){
-  note=(index+notes.length)%notes.length;
-  noteText.textContent=notes[note];
-  document.getElementById('noteNumber').textContent=`0${note+1} / 05`;
-  noteButtons.forEach((button,i)=>button.setAttribute('aria-pressed',String(i===note)));
-  const paper=document.querySelector('.note-paper');
-  if(!reduce && paper.animate)paper.animate([{opacity:.65,transform:'translateY(8px) rotate(-1deg)'},{opacity:1,transform:'translateY(0) rotate(0)'}],{duration:320,easing:'ease-out'});
+let note = -1;
+const noteText = document.getElementById('noteText');
+const noteReveal = document.getElementById('noteReveal');
+const jar = document.getElementById('drawNote');
+function showNote(index) {
+  note = (index + notes.length) % notes.length;
+  document.getElementById('notePrompt').hidden = true;
+  noteReveal.hidden = false;
+  noteText.textContent = notes[note];
+  document.getElementById('noteNumber').textContent = `0${note + 1} / 05`;
+  jar.setAttribute('aria-label', 'Draw another love note from the jar');
+  if (!reduce && noteReveal.animate) noteReveal.animate([{opacity: 0, transform: 'translateY(20px) rotate(-2deg)'}, {opacity: 1, transform: 'translateY(0) rotate(0)'}], {duration: 500, easing: 'ease-out'});
+  if (!reduce && jar.animate) jar.animate([{transform: 'rotate(0deg)'}, {transform: 'rotate(-5deg)'}, {transform: 'rotate(4deg)'}, {transform: 'rotate(0deg)'}], {duration: 560, easing: 'ease-in-out'});
 }
-document.getElementById('nextNote').addEventListener('click',()=>showNote(note+1));
-document.getElementById('prevNote').addEventListener('click',()=>showNote(note-1));
-noteButtons.forEach((button,i)=>button.addEventListener('click',()=>showNote(i)));
+jar.addEventListener('click', () => showNote(note + 1));
+document.getElementById('pickNote').addEventListener('click', () => showNote(0));
+document.getElementById('nextNote').addEventListener('click', () => showNote(note + 1));
+document.getElementById('prevNote').addEventListener('click', () => showNote(note - 1));
 let out = false;
 const wish = document.getElementById('wishButton');
 wish.addEventListener('click', () => {
