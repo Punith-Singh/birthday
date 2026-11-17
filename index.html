@@ -2412,6 +2412,25 @@ dialog[open] {
 @keyframes applausePop{0%{opacity:0;transform:translateY(18px) scale(.55) rotate(-15deg)}12%,72%{opacity:1}20%,40%,60%{transform:translateY(-4px) scale(1.12) rotate(12deg)}30%,50%,70%{transform:translateY(0) scale(1) rotate(-12deg)}100%{opacity:0;transform:translateY(-25px) scale(.8)}}
 @media(prefers-reduced-motion:reduce){.is-clapping .applause span{animation:none;opacity:1}}
 
+
+/* Three tiny worlds, one for each message. */
+.little .section-top{align-items:end;gap:40px;margin-bottom:48px}.little .section-top>p{border-left:1px solid #e6b3ce70;padding-left:22px;font-size:15px;max-width:330px}
+.love-grid{gap:20px;align-items:stretch}.love-grid .love-card{min-height:500px;display:flex;flex-direction:column;padding:25px 28px 20px;border-radius:23px;overflow:hidden;background:linear-gradient(145deg,#80436075,#291527d9);border:1px solid #f9c7dd55;box-shadow:0 10px 0 #271224,0 24px 55px #09031370,inset 0 1px #fff2}
+.love-grid .love-card--heart{background:linear-gradient(155deg,#a4507975,#3c1a34ed)}.love-grid .love-card--dream{background:linear-gradient(155deg,#77517e78,#21162eea)}
+.love-grid .love-card:after{display:none}.love-grid .love-card>*{position:relative;transform:translateZ(20px)}
+.card-meta,.card-footer{display:flex;justify-content:space-between;align-items:center;gap:10px;color:#f2c5d8;font-size:9px;font-weight:800;letter-spacing:.14em}.card-meta span:last-child{font-weight:300;letter-spacing:.1em;color:#d1a4bd}
+.love-grid .card-art{height:205px;flex:0 0 205px;display:grid;place-items:center;position:relative;transform:translateZ(38px);isolation:isolate}
+.card-art span,.card-art svg,.card-art i{position:absolute;display:block}.art-star{font-style:normal;color:#ffe8f2;text-shadow:0 0 14px #ffbadb;animation:artTwinkle 2.6s ease-in-out infinite alternate}
+.card-art .s1{top:28%;left:24%;font-size:15px}.card-art .s2{right:22%;top:23%;font-size:22px;animation-delay:-1s}.card-art .s3{right:27%;bottom:21%;font-size:11px;animation-delay:-1.8s}
+.sun-halo,.heart-halo{width:155px;height:155px;border-radius:50%;background:radial-gradient(circle,#ffc5dc60,transparent 70%);filter:blur(8px)}.sun-sphere{width:82px;height:82px;border-radius:50%;background:radial-gradient(circle at 30% 25%,#fff8dc 0%,#ffd9b4 18%,#f99eb4 55%,#b95f89 100%);box-shadow:inset -9px -10px 18px #9a45677a,inset 4px 4px 14px #fff8,0 0 35px #ffa7be90;animation:artFloat 4.6s ease-in-out infinite}
+.sun-orbit{width:135px;height:135px;border:1px solid #ffe3e899;border-radius:50%;transform:rotateX(67deg) rotate(-28deg);box-shadow:0 0 12px #ffc7dc4d}.sun-orbit.orbit-two{width:164px;height:164px;border-color:#ffc8de4d;transform:rotateX(68deg) rotate(35deg)}
+.heart-halo{width:170px;height:170px;background:radial-gradient(circle,#fa9aca70,transparent 72%)}.heart-ring{width:150px;height:150px;border:1px solid #ffd8e875;border-radius:50%;transform:rotateX(70deg) rotate(-20deg);box-shadow:0 0 14px #ffc5e059}.glass-heart{width:104px;overflow:visible;filter:drop-shadow(0 12px 8px #40102588) drop-shadow(0 0 18px #ff9dcc88);animation:artFloat 4s ease-in-out infinite}
+.dream-orbit{width:150px;height:150px;border:1px solid #f8d6f049;border-radius:50%;transform:rotateX(67deg) rotate(-35deg)}.dream-star{font-size:102px;line-height:1;color:#ffe2ee;text-shadow:0 3px 0 #d78fb7,0 9px 0 #935384,0 17px 20px #34162a,0 0 35px #ffbadcb3;animation:artFloat 4.3s ease-in-out infinite}.dream-tail{width:155px;height:2px;transform:rotate(-30deg) translate(-12px,17px);background:linear-gradient(90deg,transparent,#f5b2d4,transparent);box-shadow:0 0 12px #f8aad4}
+.card-copy{flex:1}.card-kicker{color:#edb0ce;font-weight:800;font-size:9px;letter-spacing:.16em}.love-grid .card-copy h3{margin:13px 0 13px;font-size:clamp(25px,2.3vw,32px);line-height:1.15;letter-spacing:-.045em;color:#fff5f7}.card-copy h3 span{color:#f9a7cf}.love-grid .card-copy p{margin:0;max-width:290px;color:#f0d2e0;font-size:14px;line-height:1.75}.card-footer{margin-top:27px;padding-top:16px;border-top:1px solid #ffd2e42e;font-size:8px;color:#d9abc2}.card-footer span:last-child{font-size:17px;color:#f9bdd6}
+@keyframes artFloat{0%,100%{transform:translateY(2px) rotate(-3deg)}50%{transform:translateY(-9px) rotate(3deg)}}@keyframes artTwinkle{from{opacity:.4;transform:scale(.75)}to{opacity:1;transform:scale(1.15)}}
+@media(max-width:700px){.little .section-top{margin-bottom:28px}.little .section-top>p{margin-top:20px;padding-left:16px}.love-grid{gap:15px}.love-grid .love-card{min-height:0;padding:21px 22px 19px}.love-grid .card-art{height:150px;flex-basis:150px}.sun-sphere{width:70px;height:70px}.glass-heart{width:88px}.dream-star{font-size:82px}.love-grid .card-copy h3{font-size:27px}.card-footer{margin-top:22px}}
+@media(prefers-reduced-motion:reduce){.card-art *{animation:none!important}}
+
 </style>
   </head>
 
@@ -2480,20 +2499,23 @@ dialog[open] {
           </p>
         </div>
         <div class="love-grid">
-          <article><span class="card-number">01</span>
-            <div class="love-icon">☀</div>
-            <h3>You make my<br>world brighter.</h3>
-            <p>Some people feel like sunshine. You’re my favourite kind.</p>
+          <article class="love-card love-card--sun">
+            <div class="card-meta"><span>THE WAY YOU SHINE</span><span>01 / 03</span></div>
+            <div class="card-art sun-art" aria-hidden="true"><span class="sun-halo"></span><span class="sun-orbit orbit-one"></span><span class="sun-orbit orbit-two"></span><span class="sun-sphere"></span><i class="art-star s1">✦</i><i class="art-star s2">✧</i><i class="art-star s3">✦</i></div>
+            <div class="card-copy"><span class="card-kicker">MY LITTLE SUNSHINE</span><h3>You make my<br>world brighter<span>.</span></h3><p>Some people feel like sunshine. You’re my favourite kind.</p></div>
+            <div class="card-footer"><span>A LITTLE REMINDER</span><span aria-hidden="true">✦</span></div>
           </article>
-          <article><span class="card-number">02</span>
-            <div class="love-icon">♡</div>
-            <h3>You have a place<br>in my heart.</h3>
-            <p>On the wonderful days and the ordinary ones. Especially the ordinary ones.</p>
+          <article class="love-card love-card--heart">
+            <div class="card-meta"><span>THE WAY YOU FEEL LIKE HOME</span><span>02 / 03</span></div>
+            <div class="card-art heart-art" aria-hidden="true"><span class="heart-halo"></span><span class="heart-ring"></span><svg class="glass-heart" viewBox="0 0 120 110"><defs><linearGradient id="heartGradient" x1=".15" y1="0" x2=".8" y2="1"><stop stop-color="#fff6fa"/><stop offset=".28" stop-color="#ffc5dd"/><stop offset=".68" stop-color="#ed81b3"/><stop offset="1" stop-color="#b04d84"/></linearGradient></defs><path d="M60 100C48 88 9 65 9 35 9 8 41 1 60 27 79 1 111 8 111 35c0 30-39 53-51 65Z" fill="url(#heartGradient)" stroke="#ffe4ef" stroke-width="1.6"/><path d="M25 30c4-9 14-12 22-7" fill="none" stroke="#fff" stroke-opacity=".75" stroke-width="4" stroke-linecap="round"/></svg><i class="art-star s1">✦</i><i class="art-star s2">✧</i></div>
+            <div class="card-copy"><span class="card-kicker">MY FAVOURITE PLACE</span><h3>You have a place<br>in my heart<span>.</span></h3><p>On the wonderful days and the ordinary ones. Especially the ordinary ones.</p></div>
+            <div class="card-footer"><span>ALWAYS & FOREVER</span><span aria-hidden="true">♡</span></div>
           </article>
-          <article><span class="card-number">03</span>
-            <div class="love-icon">✦</div>
-            <h3>Your dreams<br>matter to me.</h3>
-            <p>Whatever you’re reaching for, I want to be the person cheering the loudest.</p>
+          <article class="love-card love-card--dream">
+            <div class="card-meta"><span>THE WAY YOU DREAM</span><span>03 / 03</span></div>
+            <div class="card-art dream-art" aria-hidden="true"><span class="dream-orbit"></span><span class="dream-tail"></span><span class="dream-star">✦</span><i class="art-star s1">✧</i><i class="art-star s2">✦</i><i class="art-star s3">✧</i></div>
+            <div class="card-copy"><span class="card-kicker">YOUR BIGGEST CHEERLEADER</span><h3>Your dreams<br>matter to me<span>.</span></h3><p>Whatever you’re reaching for, I want to be the person cheering the loudest.</p></div>
+            <div class="card-footer"><span>TO EVERY DREAM AHEAD</span><span aria-hidden="true">✧</span></div>
           </article>
         </div>
       </section>
