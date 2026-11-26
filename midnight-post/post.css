@@ -167,6 +167,7 @@ h1 em { width: fit-content; padding-right: .08em; color: var(--rose); font-weigh
   border-top: 1px solid rgb(250 229 204 / 23%);
 }
 .from { display: flex; align-items: baseline; gap: .48rem; color: #e4d5c8; }
+.from, .post-date { white-space: nowrap; }
 .from span { font-size: .88rem; }
 .from i { color: #f4d4bf; font: italic 400 1.8rem/1 var(--display); }
 .post-date { display: flex; gap: .77rem; align-items: center; color: #f0ddc4; }
@@ -389,6 +390,7 @@ html.reading { overflow: hidden; }
 }
 @media (max-width: 380px) {
   .frame { width: calc(100% - 2.1rem); }
+  .post-date svg { width: 1.2rem; }
   .paper { padding-inline: 1.25rem; }
   .paper-slot { padding-inline: .55rem; }
 }
