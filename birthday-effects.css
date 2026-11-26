@@ -1,0 +1,28 @@
+.sound-control {
+  position: fixed;
+  z-index: 90;
+  right: max(16px, env(safe-area-inset-right));
+  bottom: max(16px, env(safe-area-inset-bottom));
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 10px 15px;
+  border: 1px solid #ffd5e99c;
+  border-radius: 999px;
+  background: #391b36ed;
+  color: #fff0f7;
+  box-shadow: 0 8px 30px #16071980, inset 0 1px #ffffff2b;
+  font: 700 12px/1.2 var(--font, sans-serif);
+  cursor: pointer;
+}
+.sound-control:focus-visible { outline: 3px solid #ffe3ac; outline-offset: 3px; }
+.sound-control span { font-size: 17px; }
+@media (prefers-reduced-motion: no-preference) {
+  .envelope, .jar-button, .wish .btn { transition: transform .3s cubic-bezier(.2,.8,.2,1), filter .3s ease; }
+  .envelope:hover, .jar-button:hover, .wish .btn:hover { transform: translateY(-4px); filter: brightness(1.09); }
+  .birthday-display .cake-stage { animation: birthday-float 6s ease-in-out infinite; }
+  .birthday-display .cake-stage.is-clapping, .birthday-display .cake-stage.is-serving { animation: none; }
+  @keyframes birthday-float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-7px); } }
+}
+@media (max-width: 600px) { .sound-control { right: 12px; bottom: max(12px, env(safe-area-inset-bottom)); } }
