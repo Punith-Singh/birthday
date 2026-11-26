@@ -6,8 +6,8 @@
   const toggle = document.createElement('button');
   toggle.type = 'button';
   toggle.className = 'sound-control';
-  toggle.setAttribute('aria-pressed', 'false');
-  toggle.innerHTML = '<span aria-hidden="true">♪</span><b>Sound off</b>';
+  toggle.setAttribute('aria-pressed', 'true');
+  toggle.innerHTML = '<span aria-hidden="true">♪</span><b>Sound on</b>';
   document.body.append(toggle);
 
   const musicButton = document.createElement('button');
@@ -18,8 +18,10 @@
   document.body.append(musicButton);
 
   let audio;
-  let enabled = false;
+  let enabled = true;
   let musicPlaying = false;
+  let musicRequested = true;
+  let startingMusic = false;
   let musicTimer;
   let musicVolume;
   const melody = [
@@ -31,47 +33,74 @@
   function startMelody() {
     if (!musicPlaying || !audio || audio.state !== 'running') return;
     let start = audio.currentTime + .05;
-    const beat = .38;
+    const beat = .48;
     melody.forEach(([frequency, duration]) => {
-      const oscillator = audio.createOscillator();
-      const envelope = audio.createGain();
       const length = duration * beat;
-      oscillator.type = 'sine';
-      oscillator.frequency.value = frequency;
-      envelope.gain.setValueAtTime(.0001, start);
-      envelope.gain.exponentialRampToValueAtTime(.09, start + .025);
-      envelope.gain.exponentialRampToValueAtTime(.0001, start + Math.max(.12, length * .9));
-      oscillator.connect(envelope).connect(musicVolume);
-      oscillator.start(start);
-      oscillator.stop(start + Math.max(.13, length));
-      oscillator.onended = () => { oscillator.disconnect(); envelope.disconnect(); };
+      // Soft, layered bell tones with a gentle octave underneath.
+      [[1, .045, .9], [2, .008, .35], [.5, .012, 1.1]].forEach(([ratio, level, decay]) => {
+        const oscillator = audio.createOscillator();
+        const envelope = audio.createGain();
+        oscillator.type = 'sine';
+        oscillator.frequency.value = frequency * ratio;
+        envelope.gain.setValueAtTime(.0001, start);
+        envelope.gain.exponentialRampToValueAtTime(level, start + .035);
+        envelope.gain.exponentialRampToValueAtTime(.0001, start + Math.max(.16, length * decay));
+        oscillator.connect(envelope).connect(musicVolume);
+        oscillator.start(start);
+        oscillator.stop(start + Math.max(.17, length * decay + .01));
+        oscillator.onended = () => { oscillator.disconnect(); envelope.disconnect(); };
+      });
       start += length;
     });
     musicTimer = setTimeout(startMelody, (start - audio.currentTime + .7) * 1000);
   }
+  async function beginMusic() {
+    if (!musicRequested || musicPlaying || startingMusic) return;
+    startingMusic = true;
+    try {
+      audio = audio || new AudioEngine();
+      if (audio.state !== 'running') await audio.resume();
+      if (audio.state !== 'running' || !musicRequested) return;
+      musicVolume = audio.createGain();
+      musicVolume.gain.value = .65;
+      musicVolume.connect(audio.destination);
+      musicPlaying = true;
+      startMelody();
+      musicButton.setAttribute('aria-pressed', 'true');
+      musicButton.querySelector('b').textContent = 'Pause birthday music';
+    } catch {
+      musicPlaying = false;
+    } finally {
+      startingMusic = false;
+    }
+  }
   musicButton.addEventListener('click', async () => {
     if (musicPlaying) {
+      musicRequested = false;
       musicPlaying = false;
       clearTimeout(musicTimer);
       musicVolume.disconnect();
       musicVolume = null;
     } else {
-      try {
-        audio = audio || new AudioEngine();
-        await audio.resume();
-        if (audio.state !== 'running') return;
-        musicVolume = audio.createGain();
-        musicVolume.gain.value = .5;
-        musicVolume.connect(audio.destination);
-        musicPlaying = true;
-        startMelody();
-      } catch {
-        musicPlaying = false;
-      }
+      musicRequested = true;
+      await beginMusic();
     }
     musicButton.setAttribute('aria-pressed', String(musicPlaying));
     musicButton.querySelector('b').textContent = musicPlaying ? 'Pause birthday music' : 'Play birthday music';
   });
+  // Browsers may block autoplay until the visitor touches the page.
+  function unlockAudio(event) {
+    if (event.target.closest('.sound-control')) return;
+    beginMusic();
+  }
+  document.addEventListener('pointerdown', unlockAudio, { capture: true });
+  document.addEventListener('keydown', unlockAudio, { capture: true });
+  try {
+    audio = new AudioEngine();
+    if (audio.state === 'running') beginMusic();
+  } catch {
+    audio = null;
+  }
   function play(notes, interval = .13) {
     if (!enabled || !audio || audio.state !== 'running') return;
     notes.forEach((frequency, index) => {
