@@ -2539,8 +2539,8 @@ dialog[open] {
 @media(prefers-reduced-motion:reduce){.cake-stage.is-serving .served-slice{animation:none;opacity:1;transform:translate(-48%,-30%) scale(1.17)}.cake-stage.is-serving .served-piece,.cake-stage.is-serving .served-message{animation:none;opacity:1}}
 
 </style>
-    <link rel="stylesheet" href="birthday-effects.css?v=letter-cake-20261126">
-    <script src="birthday-effects.js?v=letter-cake-20261126" defer></script>
+    <link rel="stylesheet" href="birthday-effects.css?v=continuous-slice-20261126">
+    <script src="birthday-effects.js?v=continuous-slice-20261126" defer></script>
   </head>
 
   <body>
@@ -3046,8 +3046,8 @@ function initTieredCake() {
     whole.position.y = slice.position.y = bottom + height/2;
     cakeGroup.add(whole,slice);slices.push(slice);
     const bodyMaterial = new T.MeshStandardMaterial({color:0xf5c4d1,roughness:.57});
-    const upperTier = radius < 1;
-    if (upperTier) {
+    const solidTier = radius > 1;
+    if (solidTier) {
       mesh(new T.CylinderGeometry(radius,radius,height,80),bodyMaterial,whole);
     } else {
       mesh(new T.CylinderGeometry(radius,radius,height,80,1,false,cutAngles[1],full-2*half),bodyMaterial,whole);
@@ -3057,7 +3057,7 @@ function initTieredCake() {
     // Buttercream edge and piped pearls follow each tier's circumference.
     for (let i=0;i<count;i++) {
       const a=i*full/count, wrapped=Math.atan2(Math.sin(a-sliceCenter),Math.cos(a-sliceCenter));
-      const parent=!upperTier && Math.abs(wrapped)<half?slice:whole;
+      const parent=!solidTier && Math.abs(wrapped)<half?slice:whole;
       const x=Math.sin(a)*radius*.99,z=Math.cos(a)*radius*.99;
       const pearl=mesh(pearlGeo,i%3===0?blush:white,parent,x,height/2,z);pearl.scale.set(1.1,.8,1.1);
       const lower=mesh(pearlGeo,i%2?blush:white,parent,x,-height/2+.045,z);lower.scale.set(1,.85,1);
@@ -3065,7 +3065,7 @@ function initTieredCake() {
     }
     const trimGeo=new T.CylinderGeometry(radius+.006,radius+.006,.045,80,1,true,cutAngles[1],full-2*half);
     const trimSlice=new T.CylinderGeometry(radius+.006,radius+.006,.045,32,1,true,cutAngles[0],2*half);
-    if (upperTier) {
+    if (solidTier) {
       mesh(new T.CylinderGeometry(radius+.006,radius+.006,.045,80,1,true),blush,whole,0,-height*.31,0);
     } else {
       mesh(trimGeo,blush,whole,0,-height*.31,0);mesh(trimSlice,blush,slice,0,-height*.31,0);
@@ -3074,16 +3074,26 @@ function initTieredCake() {
   tier(1.47,.91,.14,80);
   tier(.91,.71,1.05,55);
   // The detached cake pieces are placed on this plate and carried towards the camera.
-  const servingPlate = new T.Group(), platedPieces = new T.Group();
-  scene.add(servingPlate);servingPlate.visible=false;servingPlate.add(platedPieces);
+  const servingPlate = new T.Group();
+  scene.add(servingPlate);servingPlate.visible=false;
   mesh(new T.CylinderGeometry(.91,.96,.08,72),new T.MeshStandardMaterial({color:0xfff0ea,roughness:.3,metalness:.08}),servingPlate,0,.04,0);
   const servingRim=mesh(new T.TorusGeometry(.88,.018,8,72),gold,servingPlate,0,.09,0);servingRim.rotation.x=Math.PI/2;
   mesh(new T.CylinderGeometry(.70,.70,.012,64),new T.MeshStandardMaterial({color:0xf8dde5,roughness:.5}),servingPlate,0,.087,0);
   let sliceOnPlate=false;
+  const pickup = new T.Vector3();
   function clearServing() {
-    servingPlate.visible=false;servingPlate.scale.setScalar(1);servingPlate.position.set(0,0,0);
-    while(platedPieces.children.length) platedPieces.remove(platedPieces.children[0]);
-    sliceOnPlate=false;slices.forEach(piece=>{piece.visible=true});
+    const slice = slices[1];
+    cakeGroup.attach(slice);
+    slice.position.set(0, 1.405, 0);
+    slice.rotation.set(0, 0, 0);
+    slice.scale.setScalar(1);
+    servingPlate.visible=false;
+    servingPlate.scale.setScalar(1);
+    servingPlate.position.set(0,0,0);
+    servingPlate.rotation.set(0,0,0);
+    cakeGroup.position.set(0,0,0);
+    sliceOnPlate=false;
+    slices.forEach(piece=>{piece.visible=true});
   }
   // Candles share a single level and are spaced evenly across the top tier.
   const candles = new T.Group();cakeGroup.add(candles);
@@ -3091,7 +3101,7 @@ function initTieredCake() {
   const wax = new T.MeshStandardMaterial({color:0xfff5e9,roughness:.4});
   const stripe = new T.MeshStandardMaterial({color:0xdb82a9,roughness:.45});
   [-.42,0,.42].forEach(x=>{
-    const group=new T.Group();group.position.set(x,1.76,-.12);candles.add(group);
+    const group=new T.Group();group.position.set(x,1.76,-.36);candles.add(group);
     mesh(new T.CylinderGeometry(.055,.055,.48,20),wax,group,0,.24,0);
     const pts=[];for(let i=0;i<=64;i++){const a=i/64*Math.PI*2*3;pts.push(new T.Vector3(Math.cos(a)*.056,i/64*.45+.015,Math.sin(a)*.056))}
     mesh(new T.TubeGeometry(new T.CatmullRomCurve3(pts),64,.009,6,false),stripe,group);
@@ -3156,27 +3166,34 @@ function initTieredCake() {
       if(smoke[i].visible){smoke[i].position.y=.63+age*.3;smoke[i].position.x=Math.sin(age*5+i)*.04;smoke[i].scale.setScalar(1+age);smoke[i].material.opacity=(1-age)*.35}
     });
     if(state==='cutting'){
-      const elapsed=t-cutStart;const shift=smooth((elapsed-4100)/1300);
-      const plateArrival=smooth((elapsed-5200)/1400);
-      if(!sliceOnPlate) slices[0].position.x=shift*.55+plateArrival*.40;
-      cutFaces.forEach(f=>f.visible=shift>.015);
-      servingPlate.visible=elapsed>=5200;
-      if(servingPlate.visible && !sliceOnPlate) servingPlate.position.set(3.10-plateArrival*1.15,.16,0);
-      if(elapsed>=6600 && !sliceOnPlate){
-        servingPlate.position.set(1.95,.16,0);
-        slices.slice(0,1).forEach(piece=>{
-          const copy=piece.clone(true);
-          copy.position.set(piece.position.x-1.95,piece.position.y-.16+.08,0);
-          platedPieces.add(copy);piece.visible=false;
-        });
+      const elapsed=t-cutStart;
+      const slide=smooth((elapsed-4100)/1500);
+      const slice=slices[1];
+      cutFaces.forEach(face=>face.visible=slide>.005);
+      servingPlate.visible=elapsed>=4100;
+      if (!sliceOnPlate) {
+        // The plate reaches the outside edge before the wedge slides onto it.
+        const arrival=smooth((elapsed-4100)/650);
+        servingPlate.position.set(3.0-arrival*1.05, .80, 0);
+        slice.position.set(slide*1.35, 1.405+Math.sin(slide*Math.PI)*.09, 0);
+      }
+      if (elapsed>=5600 && !sliceOnPlate) {
+        // Reparent the actual slice while preserving its world transform.
+        scene.updateMatrixWorld(true);
+        servingPlate.attach(slice);
+        pickup.copy(slice.position);
         sliceOnPlate=true;
         hint.textContent='Bringing the first slice to you';
         result.textContent='Your first bite, my love ♡';
       }
-      if(sliceOnPlate){
-        const forward=smooth((elapsed-6600)/2400);
-        servingPlate.position.set(1.95-forward*1.3,.16+forward*.55,forward*1.5);
-        servingPlate.scale.setScalar(1+forward*.15);
+      if (sliceOnPlate) {
+        const settle=smooth((elapsed-5600)/550);
+        slice.position.set(pickup.x, pickup.y+( .455-pickup.y)*settle, pickup.z);
+        const forward=smooth((elapsed-6300)/2300);
+        servingPlate.position.set(1.95*(1-forward), .80-forward*.45, forward*2.6);
+        servingPlate.scale.setScalar(1+forward*.65);
+        servingPlate.rotation.y=-forward*.23;
+        cakeGroup.position.set(-forward*.35, 0, -forward*.25);
       }
       knife.visible=elapsed<4100;
       if(knife.visible){
@@ -3184,7 +3201,7 @@ function initTieredCake() {
         const press=smooth((phase-350)/500)-smooth((phase-1300)/500);
         // The blade starts at the centre and points along the exact face that separates the slice.
         const faceAngle=elapsed<2000?cutAngles[0]:cutAngles[1];
-        knife.position.set(0,2.34-press*1.20,0);
+        knife.position.set(0,2.08-press*.98,0);
         knife.rotation.y=faceAngle-Math.PI/2;
       }
       if(elapsed>=9600){state='done';knife.visible=false;button.disabled=false;button.textContent='Celebrate again ↺';hint.textContent='The first slice is yours';result.textContent='A little bite of happiness for you, Roseantic ♡';
@@ -3212,9 +3229,6 @@ function initTieredCake() {
   }
   stage.prepend(canvas);
   createFallbackApplause(stage);
-  const servedSlice=document.createElement('div');servedSlice.className='served-slice';servedSlice.setAttribute('aria-hidden','true');
-  servedSlice.innerHTML=`<svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="servePlateFill" x1="0" x2="0" y2="1"><stop stop-color="#fff9f5"/><stop offset="1" stop-color="#d6a2bc"/></linearGradient><linearGradient id="serveCakeFill"><stop stop-color="#e3a4b2"/><stop offset=".52" stop-color="#ffe4d9"/><stop offset="1" stop-color="#cc7c9d"/></linearGradient></defs><ellipse cx="200" cy="234" rx="166" ry="43" fill="#5b304a" opacity=".4"/><ellipse cx="200" cy="224" rx="166" ry="48" fill="url(#servePlateFill)" stroke="#d6a2b9" stroke-width="3"/><ellipse cx="200" cy="218" rx="142" ry="36" fill="#fae4e6" stroke="#e4c1ca" stroke-width="2"/><g class="served-piece"><path d="M98 172 L220 94 L302 143 L302 200 L185 236 L98 208Z" fill="url(#serveCakeFill)" stroke="#d99eaf" stroke-width="2"/><path d="M98 184 L185 216 L302 180 L302 190 L185 226 L98 194Z" fill="#b75c82"/><path d="M98 163 L220 84 L302 133 L302 150 L185 187 L98 176Z" fill="#f1b9cd"/><path d="M98 163 L220 84 L302 133 L185 173Z" fill="#fff0e9" stroke="#edc1c9" stroke-width="2"/><path d="M158 124 L220 72 L260 95 L205 145Z" fill="#ffe7e4" stroke="#e5b0c2" stroke-width="2"/><path d="M158 124 L205 145 L260 95 L260 113 L205 162 L158 140Z" fill="#f2b5ca"/><path d="M158 132 L205 154 L260 104" fill="none" stroke="#bf6d90" stroke-width="5"/><ellipse cx="218" cy="82" rx="11" ry="9" fill="#c25075"/><circle cx="214" cy="79" r="3" fill="#ffe4e9"/><circle cx="173" cy="148" r="5" fill="#fffaf3"/><circle cx="267" cy="130" r="5" fill="#fffaf3"/></g></svg><span class="served-message">Your first bite, my love ♡</span>`;
-  stage.append(servedSlice);
   stage.classList.add('is-3d');
   stage.setAttribute('aria-label', 'A two-tier birthday cake with three candles. Make a wish, then cut a slice.');
   const handImage = new Image();
@@ -3325,8 +3339,8 @@ function initTieredCake() {
     disc(2.21, .12, '#f6e8df');
     disc(1.95, .18, '#ddbbc5');
     const elapsed = state === 'cutting' ? t - start : state === 'done' ? 10000 : 0;
-    const sliceServed = elapsed >= 7000;
-    const shift = ease((elapsed - 4800) / 1300);
+    const sliceServed = false;
+    const shift = ease((elapsed - 4800) / 1500);
     const spongeShade = ctx.createLinearGradient(ox - scale * 1.75, 0, ox + scale * 1.75, 0);
     spongeShade.addColorStop(0, '#c77c91');spongeShade.addColorStop(.23, '#efb4aa');spongeShade.addColorStop(.52, '#ffe1d3');spongeShade.addColorStop(.8, '#edacaf');spongeShade.addColorStop(1, '#b96c88');
     const jamShade = ctx.createLinearGradient(ox - scale * 1.75, 0, ox + scale * 1.75, 0);
@@ -3347,19 +3361,13 @@ function initTieredCake() {
       let a = i * TAU / 64,
         b = (i + 1) * TAU / 64,
         mid = (a + b) / 2,
-        part = mid >= A && mid <= B,
+        part = false,
         sh = part ? shift : 0;
       if(part && sliceServed) continue;
       for (const [y, ht, type] of layers) {
         poly([point(1.7, a, y, sh), point(1.7, b, y, sh), point(1.7, b, y + ht, sh), point(1.7, a, y + ht, sh)], (type === 'sponge' ? spongeShade : type === 'jam' ? jamShade : frostingShade))
       }
       poly([point(0, 0, 1.41, sh), point(1.7, a, 1.41, sh), point(1.7, b, 1.41, sh)], part ? '#ffe6de' : topShade)
-    }
-    if (shift > .005 && !sliceServed) {
-      for (const ang of [A, B])
-        for (const [y, ht, type] of layers) {
-          poly([point(0, ang, y, shift), point(1.7, ang, y, shift), point(1.7, ang, y + ht, shift), point(0, ang, y + ht, shift)], type === 'sponge' ? '#f5d3b4' : type === 'jam' ? '#b65e7d' : '#e9afc2')
-        }
     }
     shapes.sort((a, b) => a.depth - b.depth);
     for (const s of shapes) {
@@ -3384,7 +3392,7 @@ function initTieredCake() {
     }
     // Layered buttercream flowers and berries around the lower rim.
     for (let i = 0; i < 15; i++) {
-      const a = i * TAU / 15, sh = (a >= A && a <= B) ? shift : 0;
+      const a = i * TAU / 15, sh = 0;
       if(sliceServed && a >= A && a <= B) continue;
       const p = project(point(1.51, a, 1.46, sh));
       const pink = i % 3 === 0;
@@ -3399,7 +3407,7 @@ function initTieredCake() {
       ctx.beginPath();ctx.ellipse(p[0], p[1], scale * .025, scale * .018, 0, 0, TAU);ctx.fillStyle = '#dca6a6';ctx.fill();
     }
     for (let i = 0; i < 5; i++) {
-      const a = i * TAU / 5 + .2, sh = (a >= A && a <= B) ? shift : 0;
+      const a = i * TAU / 5 + .2, sh = 0;
       if(sliceServed && a >= A && a <= B) continue;
       const p = project(point(1.10, a, 1.49, sh));
       const berry = ctx.createRadialGradient(p[0] - scale * .04, p[1] - scale * .05, 0, p[0], p[1], scale * .16);
@@ -3408,34 +3416,63 @@ function initTieredCake() {
       ctx.beginPath();ctx.ellipse(p[0] - scale * .032, p[1] - scale * .05, scale * .022, scale * .03, 0, 0, TAU);ctx.fillStyle = '#fff9';ctx.fill();
       ctx.beginPath();ctx.moveTo(p[0] - scale * .075, p[1] - scale * .09);ctx.quadraticCurveTo(p[0], p[1] - scale * .16, p[0] + scale * .075, p[1] - scale * .09);ctx.quadraticCurveTo(p[0], p[1] - scale * .12, p[0] - scale * .075, p[1] - scale * .09);ctx.fillStyle = '#7d966c';ctx.fill();
     }
-    // Draw the smaller upper tier with the same perspective and moving slice.
-    const upper = [];
-    function upperPoly(points, fill) {
+    const forward = ease((elapsed - 7000) / 2200);
+    const settle = ease((elapsed - 6300) / 600);
+    const sliceScale = 1 + forward * .65;
+    const sliceCenter = [
+      .66 + .82 * shift + (1.04 - 1.48) * forward,
+      1.41 + .07 * shift - .10 * settle - .95 * forward,
+      .17 + .20 * shift + 1.18 * forward
+    ];
+    function slicePoint(r, angle, y) {
+      return [
+        sliceCenter[0] + (r * Math.cos(angle) - .66) * sliceScale,
+        sliceCenter[1] + (y - 1.41) * sliceScale,
+        sliceCenter[2] + (r * Math.sin(angle) - .17) * sliceScale
+      ];
+    }
+    const upper = [], served = [];
+    function faceInto(list, points, fill) {
       const projected = points.map(project);
-      upper.push({p: projected, depth: projected.reduce((sum, q) => sum + q[2], 0) / projected.length, fill});
+      list.push({p: projected, depth: projected.reduce((sum, q) => sum + q[2], 0) / projected.length, fill});
     }
     const upperLayers = [[1.41,.20,'sponge'],[1.61,.055,'jam'],[1.665,.20,'sponge'],[1.865,.055,'jam'],[1.92,.20,'sponge'],[2.12,.10,'frost']];
     for (let i=0; i<64; i++) {
       const a=i*TAU/64,b=(i+1)*TAU/64,mid=(a+b)/2;
-      const sh=0;
+      const moving = shift>.001 && mid>=A && mid<=B;
+      const points = moving ? slicePoint : (r, angle, y) => point(r, angle, y, 0);
+      const target = moving ? served : upper;
       for (const [y,ht,type] of upperLayers) {
-        upperPoly([point(1.02,a,y,sh),point(1.02,b,y,sh),point(1.02,b,y+ht,sh),point(1.02,a,y+ht,sh)],type==='sponge'?spongeShade:type==='jam'?jamShade:frostingShade);
+        faceInto(target,[points(1.02,a,y),points(1.02,b,y),points(1.02,b,y+ht),points(1.02,a,y+ht)],type==='sponge'?spongeShade:type==='jam'?jamShade:frostingShade);
       }
-      upperPoly([point(0,0,2.22,sh),point(1.02,a,2.22,sh),point(1.02,b,2.22,sh)],topShade);
+      faceInto(target,[points(0,0,2.22),points(1.02,a,2.22),points(1.02,b,2.22)],topShade);
     }
-    upper.sort((a,b)=>a.depth-b.depth);
-    for (const face of upper) {
-      ctx.beginPath();face.p.forEach((q,i)=>i?ctx.lineTo(q[0],q[1]):ctx.moveTo(q[0],q[1]));ctx.closePath();ctx.fillStyle=face.fill;ctx.fill();
+    if (shift>.001) {
+      for (const angle of [A,B]) for (const [y,ht,type] of upperLayers) {
+        const fill=type==='sponge'?'#f5d3b4':type==='jam'?'#b65e7d':'#e9afc2';
+        faceInto(upper,[point(0,angle,y,0),point(1.02,angle,y,0),point(1.02,angle,y+ht,0),point(0,angle,y+ht,0)],fill);
+        faceInto(served,[slicePoint(0,angle,y),slicePoint(1.02,angle,y),slicePoint(1.02,angle,y+ht),slicePoint(0,angle,y+ht)],fill);
+      }
     }
-    {
-      ctx.beginPath();for(let i=0;i<64;i++){const q=project(point(1.02,i*TAU/64,2.22,0));i?ctx.lineTo(q[0],q[1]):ctx.moveTo(q[0],q[1])}ctx.closePath();ctx.fillStyle=topShade;ctx.fill();
+    function paintFaces(list) {
+      list.sort((a,b)=>a.depth-b.depth);
+      for (const face of list) {
+        ctx.beginPath();face.p.forEach((q,i)=>i?ctx.lineTo(q[0],q[1]):ctx.moveTo(q[0],q[1]));ctx.closePath();ctx.fillStyle=face.fill;ctx.fill();
+      }
     }
-    // Matching piped flowers decorate the top tier.
-    for (let i=0;i<11;i++) {
-      const a=i*TAU/11,q=project(point(.87,a,2.25,0));
-      for(let j=0;j<6;j++){const angle=j*TAU/6;ctx.beginPath();ctx.ellipse(q[0]+Math.cos(angle)*scale*.042,q[1]+Math.sin(angle)*scale*.025,scale*.055,scale*.038,0,0,TAU);ctx.fillStyle=i%3===0?'#efbfd1':'#fff5f0';ctx.fill()}
-      ctx.beginPath();ctx.ellipse(q[0],q[1],scale*.02,scale*.014,0,0,TAU);ctx.fillStyle='#d59ba8';ctx.fill();
+    paintFaces(upper);
+    // Frosting flowers use the same transform as the slice beneath them.
+    function paintTopFlowers(movingOnly) {
+      for (let i=0;i<11;i++) {
+        const a=i*TAU/11, moving=shift>.001 && a>=A && a<=B;
+        if (moving !== movingOnly) continue;
+        const q=project(moving?slicePoint(.87,a,2.25):point(.87,a,2.25,0));
+        const size=moving?sliceScale:1;
+        for(let j=0;j<6;j++){const angle=j*TAU/6;ctx.beginPath();ctx.ellipse(q[0]+Math.cos(angle)*scale*.042*size,q[1]+Math.sin(angle)*scale*.025*size,scale*.055*size,scale*.038*size,0,0,TAU);ctx.fillStyle=i%3===0?'#efbfd1':'#fff5f0';ctx.fill()}
+        ctx.beginPath();ctx.ellipse(q[0],q[1],scale*.02*size,scale*.014*size,0,0,TAU);ctx.fillStyle='#d59ba8';ctx.fill();
+      }
     }
+    paintTopFlowers(false);
     // Screen-aligned and evenly spaced across the top tier.
     const candlePositions = [[-.34, 2.22, .227], [0, 2.22, 0], [.34, 2.22, -.227]];
     candlePositions.forEach(([x, y, z], index) => {
@@ -3470,8 +3507,8 @@ function initTieredCake() {
           progress = ease(phase / 700);
         if (progress <= 0) continue;
         let a = j === 0 ? A : B,
-          p0 = project(point(.16, a, 1.415, 0)),
-          p1 = project(point(.16 + 1.54 * progress, a, 1.415, 0));
+          p0 = project(point(.16, a, 2.225, 0)),
+          p1 = project(point(.16 + .86 * progress, a, 2.225, 0));
         ctx.save();
         ctx.strokeStyle = '#9d62776d';
         ctx.lineWidth = Math.max(1, scale * .018);
@@ -3490,9 +3527,9 @@ function initTieredCake() {
         let approach = ease(phase / 600),
           press = ease((phase - 600) / 800),
           lift = ease((phase - 1550) / 600),
-          depth = .85 * approach + .42 * press - 1.25 * lift;
+          depth = .32 * approach + .82 * press - 1.15 * lift;
         let tip = project(point(.18, angle, 2.65 - depth, 0));
-        let outer = project(point(1.75 + .30 * (1 - approach) + .30 * lift, angle, 2.65 - depth, 0));
+        let outer = project(point(1.18 + .30 * (1 - approach) + .30 * lift, angle, 2.65 - depth, 0));
         let dx = outer[0] - tip[0],
           dy = outer[1] - tip[1],
           length = Math.hypot(dx, dy) || 1,
@@ -3598,8 +3635,7 @@ function initTieredCake() {
         }
         ctx.restore()
       }
-      if (elapsed >= 6200 && !stage.classList.contains('is-serving')) {
-        stage.classList.add('is-serving');
+      if (elapsed >= 6300) {
         hint.textContent = 'Bringing the first slice to you';
         result.textContent = 'Your first bite, my love ♡';
       }
@@ -3611,6 +3647,18 @@ function initTieredCake() {
         result.textContent = 'A little bite of happiness for you, Roseantic ♡';
         celebrate()
       }
+    }
+    if (shift>.001) {
+      const center=project([sliceCenter[0],sliceCenter[1]-.06*sliceScale,sliceCenter[2]]);
+      ctx.save();
+      ctx.shadowColor='#2a0d2580';ctx.shadowBlur=scale*.12;ctx.shadowOffsetY=scale*.07;
+      ctx.beginPath();ctx.ellipse(center[0],center[1]+scale*.035,scale*.82*sliceScale,scale*.29*sliceScale,0,0,TAU);ctx.fillStyle='#cba5b8';ctx.fill();
+      ctx.shadowColor='transparent';
+      ctx.beginPath();ctx.ellipse(center[0],center[1],scale*.82*sliceScale,scale*.29*sliceScale,0,0,TAU);ctx.fillStyle='#fff0ed';ctx.fill();
+      ctx.strokeStyle='#d2a16d';ctx.lineWidth=scale*.014;ctx.stroke();
+      ctx.restore();
+      paintFaces(served);
+      paintTopFlowers(true);
     }
     requestAnimationFrame(render)
   }

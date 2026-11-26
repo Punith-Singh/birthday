@@ -15,7 +15,12 @@
   musicButton.className = 'sound-control music-control';
   musicButton.setAttribute('aria-pressed', 'false');
   musicButton.innerHTML = '<span aria-hidden="true">♫</span><b>Play birthday music</b>';
-  document.body.append(musicButton);
+  const audioControls = document.createElement('div');
+  audioControls.className = 'audio-controls';
+  audioControls.setAttribute('role', 'group');
+  audioControls.setAttribute('aria-label', 'Birthday audio controls');
+  audioControls.append(toggle, musicButton);
+  document.body.append(audioControls);
 
   let audio;
   let enabled = true;
