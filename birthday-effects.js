@@ -103,12 +103,40 @@
       toggle.querySelector('b').textContent = 'Sound off';
     }
   });
+  function applause() {
+    if (!enabled || !audio || audio.state !== 'running') return;
+    const length = Math.floor(audio.sampleRate * .13);
+    const buffer = audio.createBuffer(1, length, audio.sampleRate);
+    const samples = buffer.getChannelData(0);
+    for (let i = 0; i < length; i++) samples[i] = (Math.random() * 2 - 1) * Math.exp(-i / (audio.sampleRate * .025));
+    for (let i = 0; i < 19; i++) {
+      const source = audio.createBufferSource();
+      const filter = audio.createBiquadFilter();
+      const volume = audio.createGain();
+      const start = audio.currentTime + i * .12 + Math.random() * .05;
+      source.buffer = buffer;
+      source.playbackRate.value = .8 + Math.random() * .45;
+      filter.type = 'bandpass';
+      filter.frequency.value = 900 + Math.random() * 1100;
+      filter.Q.value = .7;
+      volume.gain.value = .13 + Math.random() * .1;
+      source.connect(filter).connect(volume).connect(audio.destination);
+      source.start(start);
+      source.onended = () => { source.disconnect(); filter.disconnect(); volume.disconnect(); };
+    }
+  }
   document.addEventListener('click', event => {
     const control = event.target.closest('button');
     if (!control || control === toggle) return;
     if (control.id === 'enter') play([392, 523.25, 659.25, 783.99]);
     else if (control.id === 'openLetter' || control.id === 'drawNote' || control.closest('.jar-nav')) play([659.25, 783.99, 1046.5]);
-    else if (control.id === 'wishButton') play([523.25, 659.25]);
+    else if (control.id === 'wishButton') {
+      control.classList.remove('wish-button-pressed');
+      void control.offsetWidth;
+      control.classList.add('wish-button-pressed');
+      control.addEventListener('animationend', () => control.classList.remove('wish-button-pressed'), { once: true });
+      play([523.25, 659.25]);
+    }
   });
   const counter = document.getElementById('candleCount');
   if (counter) {
@@ -122,7 +150,7 @@
     let wasClapping = false;
     new MutationObserver(() => {
       const clapping = stage.classList.contains('is-clapping');
-      if (clapping && !wasClapping) play([523.25, 659.25, 783.99, 1046.5], .11);
+      if (clapping && !wasClapping) applause();
       wasClapping = clapping;
     }).observe(stage, { attributes: true, attributeFilter: ['class'] });
   }

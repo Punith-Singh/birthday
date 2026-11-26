@@ -24,6 +24,8 @@
   .envelope:hover, .jar-button:hover, .wish .btn:hover { transform: translateY(-4px); filter: brightness(1.09); }
   .birthday-display .cake-stage { animation: birthday-float 6s ease-in-out infinite; }
   .birthday-display .cake-stage.is-clapping, .birthday-display .cake-stage.is-serving { animation: none; }
+  .wish .btn.wish-button-pressed { animation: wish-button-press .45s cubic-bezier(.2,.7,.2,1); }
+  @keyframes wish-button-press { 0%,100% { transform: translateY(0) scale(1); } 35% { transform: translateY(6px) scale(.96); } 70% { transform: translateY(-2px) scale(1.02); } }
   @keyframes birthday-float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-7px); } }
 }
 @media (max-width: 600px) {
