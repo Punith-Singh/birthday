@@ -19,7 +19,7 @@
 
   let audio;
   let enabled = true;
-  const song = new Audio('birthday-song.mp3');
+  const song = new Audio('birthday-song.mp3?v=vocal-20261126');
   song.loop = true;
   song.volume = .42;
   song.preload = 'metadata';
