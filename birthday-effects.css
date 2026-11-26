@@ -46,3 +46,29 @@
   .sound-control { right: 12px; bottom: max(12px, env(safe-area-inset-bottom)); }
   .music-control { bottom: calc(max(12px, env(safe-area-inset-bottom)) + 52px); }
 }
+
+/* A deeper rose letter, with decoration outside the reading area. */
+#letterDialog {
+  isolation: isolate;
+  background: linear-gradient(155deg, #f1d6dc, #e8becd 100%);
+  border-color: #e4adbf;
+  color: #51263c;
+  box-shadow: 0 30px 100px #1b081caa, inset 0 1px #fff8;
+}
+#letterDialog h2, #letterDialog .dialog-close { color: #542039; }
+#letterDialog .letter-body { color: #603c50; }
+#letterDialog .letter-sign { color: #844760; }
+#letterDialog .letter-sign strong { color: #6f284c; }
+#letterDialog .eyebrow { color: #8c4063; }
+.letter-decor { position: absolute; inset: 0; overflow: hidden; z-index: -1; pointer-events: none; }
+.letter-decor span { position: absolute; color: #ad6587; opacity: .68; line-height: 1; }
+.letter-decor span:nth-child(1) { right: 58px; top: 58px; font-size: 27px; transform: rotate(18deg); }
+.letter-decor span:nth-child(2) { right: 24px; top: 125px; font-size: 28px; transform: rotate(15deg); }
+.letter-decor span:nth-child(3) { right: 36px; bottom: 40px; font-size: 34px; transform: rotate(-18deg); }
+.letter-decor span:nth-child(4) { left: 16px; bottom: 24px; font-size: 24px; transform: rotate(-18deg); }
+@media(max-width: 700px) {
+  .letter-decor span:nth-child(1) { right: 50px; top: 53px; font-size: 21px; }
+  .letter-decor span:nth-child(2) { right: 12px; top: 120px; font-size: 20px; }
+  .letter-decor span:nth-child(3) { right: 16px; bottom: 24px; font-size: 25px; }
+  .letter-decor span:nth-child(4) { left: 8px; bottom: 12px; font-size: 19px; }
+}
