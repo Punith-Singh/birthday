@@ -152,11 +152,11 @@
     const hand = document.createElement('span');
     hand.className = 'wish-tap-hand';
     hand.setAttribute('aria-hidden', 'true');
-    hand.textContent = '☝🏻';
+    hand.textContent = '👆🏻';
     wishAction.append(hand);
     function positionHand() {
-      hand.style.setProperty('--hand-x', (wishButton.offsetLeft + wishButton.offsetWidth - 20) + 'px');
-      hand.style.setProperty('--hand-y', (wishButton.offsetTop - 17) + 'px');
+      hand.style.setProperty('--hand-x', (wishButton.offsetLeft + wishButton.offsetWidth * .78 - 18) + 'px');
+      hand.style.setProperty('--hand-y', (wishButton.offsetTop + wishButton.offsetHeight - 8) + 'px');
       hand.hidden = wishButton.disabled;
     }
     new MutationObserver(positionHand).observe(wishButton, { attributes: true, attributeFilter: ['disabled'], childList: true, subtree: true });

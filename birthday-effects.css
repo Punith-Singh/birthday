@@ -37,8 +37,8 @@
   .birthday-display .cake-stage { animation: birthday-float 6s ease-in-out infinite; }
   .birthday-display .cake-stage.is-clapping, .birthday-display .cake-stage.is-serving { animation: none; }
   .wish .btn.wish-button-pressed { animation: wish-button-press .45s cubic-bezier(.2,.7,.2,1); }
-  .wish-tap-hand { animation: hand-tap 1.3s ease-in-out infinite; transform-origin: 50% 80%; }
-  @keyframes hand-tap { 0%, 100% { transform: translate(12px, 9px) rotate(-18deg); } 45% { transform: translate(0, 0) rotate(-8deg); } 55% { transform: translate(0, 0) rotate(-8deg) scale(.91); } }
+  .wish-tap-hand { animation: hand-tap 1.3s ease-in-out infinite; transform-origin: 50% 12%; }
+  @keyframes hand-tap { 0%, 100% { transform: translateY(12px); } 45% { transform: translateY(-8px); } 55% { transform: translateY(-8px) scale(.93); } }
   @keyframes wish-button-press { 0%,100% { transform: translateY(0) scale(1); } 35% { transform: translateY(6px) scale(.96); } 70% { transform: translateY(-2px) scale(1.02); } }
   @keyframes birthday-float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-7px); } }
 }
