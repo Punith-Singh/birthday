@@ -19,88 +19,55 @@
 
   let audio;
   let enabled = true;
-  let musicPlaying = false;
+  const song = new Audio('birthday-song.mp3');
+  song.loop = true;
+  song.volume = .42;
+  song.preload = 'metadata';
   let musicRequested = true;
   let startingMusic = false;
-  let musicTimer;
-  let musicVolume;
-  const melody = [
-    [392, .5], [392, .25], [440, .75], [392, .75], [523.25, .75], [493.88, 1.5],
-    [392, .5], [392, .25], [440, .75], [392, .75], [587.33, .75], [523.25, 1.5],
-    [392, .5], [392, .25], [783.99, .75], [659.25, .75], [523.25, .75], [493.88, .75], [440, 1.5],
-    [698.46, .5], [698.46, .25], [659.25, .75], [523.25, .75], [587.33, .75], [523.25, 1.75]
-  ];
-  function startMelody() {
-    if (!musicPlaying || !audio || audio.state !== 'running') return;
-    let start = audio.currentTime + .05;
-    const beat = .48;
-    melody.forEach(([frequency, duration]) => {
-      const length = duration * beat;
-      // Soft, layered bell tones with a gentle octave underneath.
-      [[1, .045, .9], [2, .008, .35], [.5, .012, 1.1]].forEach(([ratio, level, decay]) => {
-        const oscillator = audio.createOscillator();
-        const envelope = audio.createGain();
-        oscillator.type = 'sine';
-        oscillator.frequency.value = frequency * ratio;
-        envelope.gain.setValueAtTime(.0001, start);
-        envelope.gain.exponentialRampToValueAtTime(level, start + .035);
-        envelope.gain.exponentialRampToValueAtTime(.0001, start + Math.max(.16, length * decay));
-        oscillator.connect(envelope).connect(musicVolume);
-        oscillator.start(start);
-        oscillator.stop(start + Math.max(.17, length * decay + .01));
-        oscillator.onended = () => { oscillator.disconnect(); envelope.disconnect(); };
-      });
-      start += length;
-    });
-    musicTimer = setTimeout(startMelody, (start - audio.currentTime + .7) * 1000);
+
+  function syncMusicButton() {
+    const playing = !song.paused;
+    musicButton.setAttribute('aria-pressed', String(playing));
+    musicButton.querySelector('b').textContent = playing ? 'Pause birthday music' : 'Play birthday music';
   }
   async function beginMusic() {
-    if (!musicRequested || musicPlaying || startingMusic) return;
+    if (!musicRequested || !song.paused || startingMusic) return;
     startingMusic = true;
     try {
-      audio = audio || new AudioEngine();
-      if (audio.state !== 'running') await audio.resume();
-      if (audio.state !== 'running' || !musicRequested) return;
-      musicVolume = audio.createGain();
-      musicVolume.gain.value = .65;
-      musicVolume.connect(audio.destination);
-      musicPlaying = true;
-      startMelody();
-      musicButton.setAttribute('aria-pressed', 'true');
-      musicButton.querySelector('b').textContent = 'Pause birthday music';
+      await song.play();
     } catch {
-      musicPlaying = false;
+      // A first tap is required by many browsers before sound can play.
     } finally {
       startingMusic = false;
+      syncMusicButton();
     }
   }
-  musicButton.addEventListener('click', async () => {
-    if (musicPlaying) {
+  musicButton.addEventListener('click', () => {
+    if (!song.paused) {
       musicRequested = false;
-      musicPlaying = false;
-      clearTimeout(musicTimer);
-      musicVolume.disconnect();
-      musicVolume = null;
+      song.pause();
+      syncMusicButton();
     } else {
       musicRequested = true;
-      await beginMusic();
+      beginMusic();
     }
-    musicButton.setAttribute('aria-pressed', String(musicPlaying));
-    musicButton.querySelector('b').textContent = musicPlaying ? 'Pause birthday music' : 'Play birthday music';
   });
-  // Browsers may block autoplay until the visitor touches the page.
   function unlockAudio(event) {
     if (event.target.closest('.sound-control')) return;
-    beginMusic();
+    if (musicRequested) beginMusic();
+    if (enabled) {
+      try {
+        audio = audio || new AudioEngine();
+        if (audio.state !== 'running') audio.resume().catch(() => {});
+      } catch {}
+    }
   }
   document.addEventListener('pointerdown', unlockAudio, { capture: true });
   document.addEventListener('keydown', unlockAudio, { capture: true });
-  try {
-    audio = new AudioEngine();
-    if (audio.state === 'running') beginMusic();
-  } catch {
-    audio = null;
-  }
+  song.addEventListener('play', syncMusicButton);
+  song.addEventListener('pause', syncMusicButton);
+  beginMusic();
   function play(notes, interval = .13) {
     if (!enabled || !audio || audio.state !== 'running') return;
     notes.forEach((frequency, index) => {
