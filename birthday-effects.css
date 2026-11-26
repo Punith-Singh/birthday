@@ -17,6 +17,7 @@
   cursor: pointer;
 }
 .sound-control:focus-visible { outline: 3px solid #ffe3ac; outline-offset: 3px; }
+.music-control { bottom: calc(max(16px, env(safe-area-inset-bottom)) + 52px); }
 .sound-control span { font-size: 17px; }
 @media (prefers-reduced-motion: no-preference) {
   .envelope, .jar-button, .wish .btn { transition: transform .3s cubic-bezier(.2,.8,.2,1), filter .3s ease; }
@@ -25,4 +26,7 @@
   .birthday-display .cake-stage.is-clapping, .birthday-display .cake-stage.is-serving { animation: none; }
   @keyframes birthday-float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-7px); } }
 }
-@media (max-width: 600px) { .sound-control { right: 12px; bottom: max(12px, env(safe-area-inset-bottom)); } }
+@media (max-width: 600px) {
+  .sound-control { right: 12px; bottom: max(12px, env(safe-area-inset-bottom)); }
+  .music-control { bottom: calc(max(12px, env(safe-area-inset-bottom)) + 52px); }
+}
