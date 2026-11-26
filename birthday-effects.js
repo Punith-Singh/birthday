@@ -146,6 +146,24 @@
     }).observe(counter, { childList: true, characterData: true, subtree: true });
   }
   const stage = document.getElementById('cakeStage');
+  const wishButton = document.getElementById('wishButton');
+  const wishAction = document.querySelector('.wish-action');
+  if (wishButton && wishAction) {
+    const hand = document.createElement('span');
+    hand.className = 'wish-tap-hand';
+    hand.setAttribute('aria-hidden', 'true');
+    hand.textContent = '☝🏻';
+    wishAction.append(hand);
+    function positionHand() {
+      hand.style.setProperty('--hand-x', (wishButton.offsetLeft + wishButton.offsetWidth - 20) + 'px');
+      hand.style.setProperty('--hand-y', (wishButton.offsetTop - 17) + 'px');
+      hand.hidden = wishButton.disabled;
+    }
+    new MutationObserver(positionHand).observe(wishButton, { attributes: true, attributeFilter: ['disabled'], childList: true, subtree: true });
+    if (window.ResizeObserver) new ResizeObserver(positionHand).observe(wishAction);
+    window.addEventListener('resize', positionHand, { passive: true });
+    positionHand();
+  }
   if (stage) {
     let wasClapping = false;
     new MutationObserver(() => {

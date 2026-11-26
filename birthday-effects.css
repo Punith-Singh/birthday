@@ -18,6 +18,18 @@
 }
 .sound-control:focus-visible { outline: 3px solid #ffe3ac; outline-offset: 3px; }
 .music-control { bottom: calc(max(16px, env(safe-area-inset-bottom)) + 52px); }
+.wish-action { position: relative; }
+.wish-tap-hand {
+  position: absolute;
+  z-index: 8;
+  left: var(--hand-x, 75%);
+  top: var(--hand-y, 0px);
+  font-size: 36px;
+  line-height: 1;
+  pointer-events: none;
+  filter: drop-shadow(0 3px 5px #2a102c99);
+}
+.wish-tap-hand[hidden] { display: none; }
 .sound-control span { font-size: 17px; }
 @media (prefers-reduced-motion: no-preference) {
   .envelope, .jar-button, .wish .btn { transition: transform .3s cubic-bezier(.2,.8,.2,1), filter .3s ease; }
@@ -25,6 +37,8 @@
   .birthday-display .cake-stage { animation: birthday-float 6s ease-in-out infinite; }
   .birthday-display .cake-stage.is-clapping, .birthday-display .cake-stage.is-serving { animation: none; }
   .wish .btn.wish-button-pressed { animation: wish-button-press .45s cubic-bezier(.2,.7,.2,1); }
+  .wish-tap-hand { animation: hand-tap 1.3s ease-in-out infinite; transform-origin: 50% 80%; }
+  @keyframes hand-tap { 0%, 100% { transform: translate(12px, 9px) rotate(-18deg); } 45% { transform: translate(0, 0) rotate(-8deg); } 55% { transform: translate(0, 0) rotate(-8deg) scale(.91); } }
   @keyframes wish-button-press { 0%,100% { transform: translateY(0) scale(1); } 35% { transform: translateY(6px) scale(.96); } 70% { transform: translateY(-2px) scale(1.02); } }
   @keyframes birthday-float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-7px); } }
 }
