@@ -293,7 +293,7 @@
   }
 
   function sendWish() {
-    if (reader.dataset.phase !== "reading") return;
+    if (!reader.open || reader.dataset.phase === "flying") return;
     wished = true;
     byId("dedication").textContent = "For the year ahead";
     byId("headline").textContent = "I love you,";
